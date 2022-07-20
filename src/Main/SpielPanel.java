@@ -5,7 +5,7 @@ import java.awt.*;
 
 public class SpielPanel extends JPanel {
     Image hintergrundBild;
-    JPanel gegnerPanel, statPanel,btnPanel, textPanel;
+    JPanel gamePanel, statPanel,btnPanel, textPanel;
 
     public SpielPanel() {
         setTitelScreen();
@@ -34,6 +34,7 @@ public class SpielPanel extends JPanel {
 
         titelStartBtn.addActionListener(e -> {
             setSpielScreen();
+            Spiel.Test();
         });
     }
     public void setSpielScreen() {
@@ -46,15 +47,15 @@ public class SpielPanel extends JPanel {
         SpringLayout layout = new SpringLayout();
         setLayout(layout);
         //endregion
-        //region gegnerpanel
-        gegnerPanel = new JPanel();
-        add(gegnerPanel);
-        gegnerPanel.setPreferredSize(new Dimension(500,300));
-        gegnerPanel.setBorder(BorderFactory.createLineBorder(Color.WHITE,2,true));
-        gegnerPanel.setBackground(Color.BLACK);
+        //region gamepanel
+        gamePanel = new JPanel();
+        add(gamePanel);
+        gamePanel.setPreferredSize(new Dimension(500,300));
+        gamePanel.setBorder(BorderFactory.createLineBorder(Color.WHITE,2,true));
+        gamePanel.setBackground(Color.BLACK);
 
-        layout.putConstraint(SpringLayout.WEST,gegnerPanel,15, SpringLayout.WEST,this);
-        layout.putConstraint(SpringLayout.NORTH,gegnerPanel,20, SpringLayout.NORTH,this);
+        layout.putConstraint(SpringLayout.WEST,gamePanel,15, SpringLayout.WEST,this);
+        layout.putConstraint(SpringLayout.NORTH,gamePanel,20, SpringLayout.NORTH,this);
         //endregion
         //region statpanel
         statPanel = new JPanel();
@@ -73,7 +74,7 @@ public class SpielPanel extends JPanel {
         textPanel.setBackground(Color.BLACK);
 
         layout.putConstraint(SpringLayout.WEST, textPanel, 15,SpringLayout.WEST,this);
-        layout.putConstraint(SpringLayout.NORTH, textPanel, 10, SpringLayout.SOUTH, gegnerPanel);
+        layout.putConstraint(SpringLayout.NORTH, textPanel, 10, SpringLayout.SOUTH, gamePanel);
 
         add(textPanel);
         //endregion
