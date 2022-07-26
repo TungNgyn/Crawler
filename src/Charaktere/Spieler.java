@@ -15,23 +15,11 @@ public class Spieler extends Charaktere{
     }
 
     @Override
-    public double angriff(String modifier, int anzahlAngriffe) {
-        for (int i = 0; i < anzahlAngriffe; i++) {
-            switch (modifier) {
-                case "str":
-                    return str*0.1+10;
-                    break;
-                case "dex":
-                    return dex*0.1+10;
-                    break;
-                case "kno":
-                    return kno*0.1+10;
-                    break;
-                case "wis":
-                    return wis*0.1+10;
-                    break;
-            }
+    public double angriff(String modifier, int kraft) {
+        if (modifier.equals("str")){
+            return kraft*str;
+        } else {
+            return 0;
         }
-        return 0;
     }
 }

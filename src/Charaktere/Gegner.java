@@ -11,7 +11,7 @@ public class Gegner extends Charaktere{
     }
 
     @Override
-    public double angriff(String modifier, int anzahlAngriffe) {
+    public double angriff(String modifier, int kraft) {
         return 5;
     }
 }
