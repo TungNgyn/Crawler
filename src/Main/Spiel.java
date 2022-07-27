@@ -1,30 +1,34 @@
 package Main;
 
-import Charaktere.Gegner;
 import Charaktere.Spieler;
-import Skills.SkillsRitter;
+import Skills.Skills;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import static Skills.Skills.*;
+
 public class Spiel {
     SpielFrame spielFrame;
     SpielPanel spielPanel;
+    static Spieler spieler;
 
     public Spiel() {
+        spieler = new Spieler();
         spielPanel = new SpielPanel();
         spielFrame = new SpielFrame(spielPanel);
     }
 
     public static void Test() {
-        Spieler spieler = new Spieler("Test", 50, 20, 0, 1,
-                10, 6, 2, 3);
-        Gegner gegner = new Gegner("Monster", 30, 10, 5, 1,
-                8, 8, 1, 2);
-
-        SpielPanel.skillBtn1.setIcon(SkillsRitter.skillAngriff.getBild());
-        SpielPanel.skillBtn2.setIcon(SkillsRitter.skillSchuss.getBild());
+        Skill1Aenderung(skillAngriff);
+        Skill2Aenderung(skillAnsturm);
+        Skill3Aenderung(skillBlitzschlag);
+        Skill4Aenderung(skillStampfer);
+        Skill5Aenderung(skillBrutalerSchlag);
+}
+    public static void Skill1Aenderung(Skills x) {
+        SpielPanel.skillBtn1.setIcon(x.getBild());
         SpielPanel.skillBtn1.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -43,7 +47,7 @@ public class Spiel {
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                SkillLblInfoUpdate(SkillsRitter.skillAngriff.getName(), SkillsRitter.skillAngriff.getMod(), SkillsRitter.skillAngriff.getKraft());
+                SkillLblInfoUpdate(x.getName(), x.getMod(), x.getKraft());
             }
 
             @Override
@@ -54,6 +58,9 @@ public class Spiel {
 
             }
         });
+    }
+    public static void Skill2Aenderung(Skills x) {
+        SpielPanel.skillBtn2.setIcon(x.getBild());
         SpielPanel.skillBtn2.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -72,7 +79,7 @@ public class Spiel {
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                SkillLblInfoUpdate(SkillsRitter.skillSchuss.getName(), SkillsRitter.skillSchuss.getMod(), SkillsRitter.skillSchuss.getKraft());
+                SkillLblInfoUpdate(x.getName(), x.getMod(), x.getKraft());
             }
 
             @Override
@@ -80,12 +87,102 @@ public class Spiel {
                 SpielPanel.skillLblName.setText("");
                 SpielPanel.skillLblKraft.setText("");
                 SpielPanel.skillLblMod.setText("");
-
             }
         });
+    }
+    public static void Skill3Aenderung(Skills x) {
+        SpielPanel.skillBtn3.setIcon(x.getBild());
+        SpielPanel.skillBtn3.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
 
+            }
 
-}
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                SkillLblInfoUpdate(x.getName(), x.getMod(), x.getKraft());
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                SpielPanel.skillLblName.setText("");
+                SpielPanel.skillLblKraft.setText("");
+                SpielPanel.skillLblMod.setText("");
+            }
+        });
+    }
+    public static void Skill4Aenderung(Skills x) {
+        SpielPanel.skillBtn4.setIcon(x.getBild());
+        SpielPanel.skillBtn4.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                SkillLblInfoUpdate(x.getName(), x.getMod(), x.getKraft());
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                SpielPanel.skillLblName.setText("");
+                SpielPanel.skillLblKraft.setText("");
+                SpielPanel.skillLblMod.setText("");
+            }
+        });
+    }
+    public static void Skill5Aenderung(Skills x) {
+        SpielPanel.skillBtn5.setIcon(x.getBild());
+        SpielPanel.skillBtn5.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                SkillLblInfoUpdate(x.getName(), x.getMod(), x.getKraft());
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                SpielPanel.skillLblName.setText("");
+                SpielPanel.skillLblKraft.setText("");
+                SpielPanel.skillLblMod.setText("");
+            }
+        });
+    }
     public static void SkillLblInfoUpdate(String name, String mod, int kraft) {
         SpielPanel.skillLblName.setText(name);
         SpielPanel.skillLblKraft.setText("Kraft: " + kraft);

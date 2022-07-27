@@ -4,6 +4,9 @@ public abstract class Charaktere {
     String name;
     int hp, maxHp, sp, maxSp, exp, lvl, str, dex, kno, wis;
 
+    public Charaktere(){
+
+    };
     public Charaktere(String name, int maxHp, int maxSp, int exp, int lvl,
                       int str, int dex, int kno, int wis) {
         this.name = name;
