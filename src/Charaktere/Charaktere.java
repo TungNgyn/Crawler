@@ -1,14 +1,26 @@
 package Charaktere;
 
+import javax.swing.*;
+
 public abstract class Charaktere {
     String name;
     int hp, maxHp, sp, maxSp, exp, lvl, str, dex, kno, wis;
+    ImageIcon bild;
 
     public Charaktere(){
 
     };
+
+    public ImageIcon getBild() {
+        return bild;
+    }
+
+    public void setBild(ImageIcon bild) {
+        this.bild = bild;
+    }
+
     public Charaktere(String name, int maxHp, int maxSp, int exp, int lvl,
-                      int str, int dex, int kno, int wis) {
+                      int str, int dex, int kno, int wis, ImageIcon bild) {
         this.name = name;
         this.maxHp = maxHp;
         this.hp = maxHp;
@@ -20,6 +32,7 @@ public abstract class Charaktere {
         this.dex = dex;
         this.kno = kno;
         this.wis = wis;
+        this.bild = bild;
     }
 
     public String getName() {
