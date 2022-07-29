@@ -19,11 +19,24 @@ public class Spieler extends Charaktere {
     }
 
     @Override
-    public double angriff(String modifier, int kraft) {
-        if (modifier.equals("str")){
-            return kraft*str;
-        } else {
-            return 0;
+    public int angriff(String modifier, int kraft) {
+        int angriffsWert = 0;
+
+        switch (modifier) {
+            case "str":
+                angriffsWert = (atk + str * (kraft/100));
+                break;
+            case "dex":
+                angriffsWert = (atk + dex * (kraft/100));
+                break;
+            case "kno":
+                angriffsWert = (atk + kno * (kraft/100));
+                break;
+            case "wis":
+                angriffsWert = (atk + wis * (kraft/100));
+                break;
         }
+
+        return angriffsWert;
     }
 }

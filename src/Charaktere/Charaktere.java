@@ -4,7 +4,7 @@ import javax.swing.*;
 
 public abstract class Charaktere {
     String name;
-    int hp, maxHp, sp, maxSp, exp, lvl, str, dex, kno, wis;
+    int hp, maxHp, sp, maxSp, exp, lvl, atk, def, str, dex, kno, wis;
     ImageIcon bild;
 
     public Charaktere(){
@@ -19,7 +19,23 @@ public abstract class Charaktere {
         this.bild = bild;
     }
 
-    public Charaktere(String name, int maxHp, int maxSp, int exp, int lvl,
+    public int getAtk() {
+        return atk;
+    }
+
+    public void setAtk(int atk) {
+        this.atk = atk;
+    }
+
+    public int getDef() {
+        return def;
+    }
+
+    public void setDef(int def) {
+        this.def = def;
+    }
+
+    public Charaktere(String name, int maxHp, int maxSp, int exp, int lvl, int atk, int def,
                       int str, int dex, int kno, int wis, ImageIcon bild) {
         this.name = name;
         this.maxHp = maxHp;
@@ -28,6 +44,8 @@ public abstract class Charaktere {
         this.sp = maxSp;
         this.exp = exp;
         this.lvl = lvl;
+        this.atk = atk;
+        this.def = def;
         this.str = str;
         this.dex = dex;
         this.kno = kno;
@@ -124,5 +142,5 @@ public abstract class Charaktere {
     }
 
     public abstract boolean amLeben();
-    public abstract double angriff(String modifier, int anzahlAngriffe);
+    public abstract int angriff(String modifier, int anzahlAngriffe);
 }

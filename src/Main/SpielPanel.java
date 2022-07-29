@@ -8,19 +8,23 @@ import static Skills.Skills.*;
 
 public class SpielPanel extends JPanel {
     Image hintergrundBild;
-    JPanel gamePanel, statPanel,btnPanel, textPanel, skillInfoPanel, gegnerPanel;
-    static JButton skillBtn1, skillBtn2, skillBtn3, skillBtn4, skillBtn5;
-    static JLabel skillLblName, skillLblKraft, skillLblGenauigkeit, klasseLbl, hpLbl,
-    spLbl,strLbl,dexLbl,knoLbl,wisLbl, spielerNameLbl, spielerHpLbl, spielerSpLbl, spielerExpLbl, spielerHp,
-            spielerSp, spielerExp, spielerStrLbl, spielerStr, spielerDexLbl, spielerDex, spielerKnoLbl, spielerKno,
-            spielerWisLbl, spielerWis, gegnerBildLbl, gegnerNameLbl;
-    static JProgressBar spielerHpBar, spielerSpBar, spielerExpBar, gegnerHpBar;
-    static ImageIcon gegnerBild;
+    public static JPanel gamePanel,statPanel,btnPanel,textPanel,skillInfoPanel,gegnerPanel;
+    public static JButton skillBtn1, skillBtn2, skillBtn3, skillBtn4, skillBtn5;
+    public static JLabel skillLblName, skillLblKraft, skillLblGenauigkeit, spielerNameLbl, spielerHp,
+            spielerSp, spielerExp, spielerStr, spielerDex, spielerKno, spielerWis, gegnerBildLbl, gegnerNameLbl,
+            spielerAtk, spielerDef;
+    private static JLabel vorschauklasseLbl, vorschauhpLbl,
+            vorschauspLbl,vorschaustrLbl,vorschaudexLbl,vorschauknoLbl,vorschauwisLbl,spielerStrLbl,spielerDexLbl,
+            spielerKnoLbl,vorschauatkLbl, vorschaudefLbl, spielerAtkLbl, spielerDefLbl,
+            spielerWisLbl,spielerHpLbl, spielerSpLbl, spielerExpLbl;
+    public static JProgressBar spielerHpBar, spielerSpBar, spielerExpBar, gegnerHpBar;
+    public static ImageIcon gegnerBild;
+    public static JTextArea textLog;
 
     public SpielPanel() {
+        setFocusable(true);
         setTitelScreen();
     }
-
     public void setTitelScreen() {
         SpringLayout layout = new SpringLayout();
         setLayout(layout);
@@ -90,13 +94,14 @@ public class SpielPanel extends JPanel {
         gegnerPanel.add(gegnerBildLbl);
         gegnerPanel.add(gegnerNameLbl);
         gegnerPanel.add(gegnerHpBar);
+        gegnerPanel.setVisible(false);
         gamePanel.add(gegnerPanel);
         //endregion
         //endregion
         //region statpanel
         statPanel = new JPanel();
         add(statPanel);
-        statPanel.setPreferredSize(new Dimension(250,360));
+        statPanel.setPreferredSize(new Dimension(250,420));
         statPanel.setBorder(BorderFactory.createLineBorder(Color.WHITE,2,true));
         statPanel.setBackground(Color.BLACK);
         SpringLayout layoutStat = new SpringLayout();
@@ -176,16 +181,28 @@ public class SpielPanel extends JPanel {
         statPanel.add(spielerExpBar);
         //endregion
         //region botside
-        spielerStrLbl = new JLabel("Stärke");
+        spielerAtkLbl = new JLabel("Angriff");
+        spielerAtk = new JLabel("" + spieler.getAtk());
+        spielerDefLbl = new JLabel("Verteidigung");
+        spielerDef = new JLabel("" + spieler.getDef());
+        spielerStrLbl = new JLabel("<html><font color='#ff0000'>Stärke");
         spielerStr = new JLabel("" + spieler.getStr());
-        spielerDexLbl = new JLabel( "Geschick");
+        spielerDexLbl = new JLabel( "<html><font color='#3cb371'>Geschick");
         spielerDex = new JLabel("" + spieler.getDex());
-        spielerKnoLbl = new JLabel( "Intelligenz");
+        spielerKnoLbl = new JLabel( "<html><font color='#94d0ff'>Intelligenz");
         spielerKno = new JLabel("" + spieler.getKno());
-        spielerWisLbl = new JLabel("Weisheit");
+        spielerWisLbl = new JLabel("<html><font color='#ffe400'>Weisheit");
         spielerWis = new JLabel("" + spieler.getWis());
 
 
+        spielerAtkLbl.setFont(statFont);
+        spielerAtkLbl.setForeground(Color.WHITE);
+        spielerAtk.setFont(statFont);
+        spielerAtk.setForeground(Color.WHITE);
+        spielerDefLbl.setFont(statFont);
+        spielerDefLbl.setForeground(Color.WHITE);
+        spielerDef.setFont(statFont);
+        spielerDef.setForeground(Color.WHITE);
         spielerStrLbl.setFont(statFont);
         spielerStrLbl.setForeground(Color.WHITE);
         spielerStr.setFont(statFont);
@@ -203,26 +220,38 @@ public class SpielPanel extends JPanel {
         spielerWis.setFont(statFont);
         spielerWis.setForeground(Color.WHITE);
 
+        layoutStat.putConstraint(SpringLayout.WEST,spielerAtkLbl,30,SpringLayout.WEST,statPanel);
+        layoutStat.putConstraint(SpringLayout.WEST,spielerDefLbl,30,SpringLayout.WEST,statPanel);
         layoutStat.putConstraint(SpringLayout.WEST,spielerStrLbl,30,SpringLayout.WEST,statPanel);
         layoutStat.putConstraint(SpringLayout.WEST,spielerDexLbl,30,SpringLayout.WEST,statPanel);
         layoutStat.putConstraint(SpringLayout.WEST,spielerKnoLbl,30,SpringLayout.WEST,statPanel);
         layoutStat.putConstraint(SpringLayout.WEST,spielerWisLbl,30,SpringLayout.WEST,statPanel);
 
+        layoutStat.putConstraint(SpringLayout.EAST,spielerAtk,-30,SpringLayout.EAST,statPanel);
+        layoutStat.putConstraint(SpringLayout.EAST,spielerDef,-30,SpringLayout.EAST,statPanel);
         layoutStat.putConstraint(SpringLayout.EAST,spielerStr,-30,SpringLayout.EAST,statPanel);
         layoutStat.putConstraint(SpringLayout.EAST,spielerDex,-30,SpringLayout.EAST,statPanel);
         layoutStat.putConstraint(SpringLayout.EAST,spielerKno,-30,SpringLayout.EAST,statPanel);
         layoutStat.putConstraint(SpringLayout.EAST,spielerWis,-30,SpringLayout.EAST,statPanel);
 
-        layoutStat.putConstraint(SpringLayout.NORTH,spielerStrLbl,20,SpringLayout.SOUTH,spielerExpBar);
+        layoutStat.putConstraint(SpringLayout.NORTH,spielerAtkLbl,20,SpringLayout.SOUTH,spielerExpBar);
+        layoutStat.putConstraint(SpringLayout.NORTH,spielerDefLbl,10,SpringLayout.SOUTH,spielerAtkLbl);
+        layoutStat.putConstraint(SpringLayout.NORTH,spielerStrLbl,10,SpringLayout.SOUTH,spielerDefLbl);
         layoutStat.putConstraint(SpringLayout.NORTH,spielerDexLbl,10,SpringLayout.SOUTH,spielerStrLbl);
         layoutStat.putConstraint(SpringLayout.NORTH,spielerKnoLbl,10,SpringLayout.SOUTH,spielerDexLbl);
         layoutStat.putConstraint(SpringLayout.NORTH,spielerWisLbl,10,SpringLayout.SOUTH,spielerKnoLbl);
 
-        layoutStat.putConstraint(SpringLayout.NORTH,spielerStr,20,SpringLayout.SOUTH,spielerExpBar);
-        layoutStat.putConstraint(SpringLayout.NORTH,spielerDex,10,SpringLayout.SOUTH,spielerStrLbl);
-        layoutStat.putConstraint(SpringLayout.NORTH,spielerKno,10,SpringLayout.SOUTH,spielerDexLbl);
-        layoutStat.putConstraint(SpringLayout.NORTH,spielerWis,10,SpringLayout.SOUTH,spielerKnoLbl);
+        layoutStat.putConstraint(SpringLayout.NORTH,spielerAtk,20,SpringLayout.SOUTH,spielerExpBar);
+        layoutStat.putConstraint(SpringLayout.NORTH,spielerDef,10,SpringLayout.SOUTH,spielerAtk);
+        layoutStat.putConstraint(SpringLayout.NORTH,spielerStr,10,SpringLayout.SOUTH,spielerDef);
+        layoutStat.putConstraint(SpringLayout.NORTH,spielerDex,10,SpringLayout.SOUTH,spielerStr);
+        layoutStat.putConstraint(SpringLayout.NORTH,spielerKno,10,SpringLayout.SOUTH,spielerDex);
+        layoutStat.putConstraint(SpringLayout.NORTH,spielerWis,10,SpringLayout.SOUTH,spielerKno);
 
+        statPanel.add(spielerAtkLbl);
+        statPanel.add(spielerAtk);
+        statPanel.add(spielerDefLbl);
+        statPanel.add(spielerDef);
         statPanel.add(spielerStrLbl);
         statPanel.add(spielerStr);
         statPanel.add(spielerDexLbl);
@@ -242,6 +271,20 @@ public class SpielPanel extends JPanel {
         layout.putConstraint(SpringLayout.WEST, textPanel, 15,SpringLayout.WEST,this);
         layout.putConstraint(SpringLayout.NORTH, textPanel, 10, SpringLayout.SOUTH, gamePanel);
 
+        textLog = new JTextArea();
+        textLog.setLineWrap(true);
+        textLog.setEditable(false);
+        textLog.setBackground(Color.BLACK);
+        textLog.setFont(statFont);
+        textLog.setForeground(Color.WHITE);
+
+        JScrollPane textLogScroll = new JScrollPane(textLog);
+        textLogScroll.setPreferredSize(new Dimension(490, 170));
+        textLogScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+//        textLogScroll.setBorder(BorderFactory.createEmptyBorder());
+//        textLogScroll.setBorder(BorderFactory.createLineBorder(Color.WHITE, 2, true));
+
+        textPanel.add(textLogScroll);
         add(textPanel);
         //endregion
         //region buttonpanel
@@ -267,6 +310,12 @@ public class SpielPanel extends JPanel {
         skillBtn3.setBackground(Color.BLACK);
         skillBtn4.setBackground(Color.BLACK);
         skillBtn5.setBackground(Color.BLACK);
+
+        skillBtn1.setEnabled(false);
+        skillBtn2.setEnabled(false);
+        skillBtn3.setEnabled(false);
+        skillBtn4.setEnabled(false);
+        skillBtn5.setEnabled(false);
 
         btnPanel.add(skillBtn1);
         btnPanel.add(skillBtn2);
@@ -308,6 +357,7 @@ public class SpielPanel extends JPanel {
         skillInfoPanel.add(skillLblKraft);
         skillInfoPanel.add(skillLblGenauigkeit);
 
+        skillInfoPanel.setVisible(false);
         add(skillInfoPanel);
         //endregion
 
@@ -334,46 +384,57 @@ public class SpielPanel extends JPanel {
         SpringLayout layoutStats = new SpringLayout();
         statsPanel.setLayout(layoutStats);
         JButton startBtn = new JButton("Start");
-        klasseLbl = new JLabel("Klasse");
-        hpLbl = new JLabel("HP: ");
-        spLbl = new JLabel("SP: ");
-        strLbl = new JLabel("Stärke: ");
-        dexLbl = new JLabel("Geschick: ");
-        knoLbl = new JLabel("Intelligenz: ");
-        wisLbl = new JLabel("Weisheit: ");
+        vorschauklasseLbl = new JLabel("");
+        vorschauhpLbl = new JLabel(" ");
+        vorschauspLbl = new JLabel(" ");
+        vorschaustrLbl = new JLabel(" ");
+        vorschaudexLbl = new JLabel(" ");
+        vorschauknoLbl = new JLabel(" ");
+        vorschauwisLbl = new JLabel(" ");
+        vorschauatkLbl = new JLabel(" ");
+        vorschaudefLbl = new JLabel(" ");
 
 
         Font statFont = new Font("Segoe UI", Font.BOLD, 14);
-        klasseLbl.setFont(new Font("Segoe UI", Font.BOLD, 20));
-        hpLbl.setFont(statFont);
-        spLbl.setFont(statFont);
-        strLbl.setFont(statFont);
-        dexLbl.setFont(statFont);
-        knoLbl.setFont(statFont);
-        wisLbl.setFont(statFont);
+        vorschauklasseLbl.setFont(new Font("Segoe UI", Font.BOLD, 20));
+        vorschauhpLbl.setFont(statFont);
+        vorschauspLbl.setFont(statFont);
+        vorschaustrLbl.setFont(statFont);
+        vorschaudexLbl.setFont(statFont);
+        vorschauknoLbl.setFont(statFont);
+        vorschauwisLbl.setFont(statFont);
+        vorschauatkLbl.setFont(statFont);
+        vorschaudefLbl.setFont(statFont);
 
-        klasseLbl.setForeground(Color.WHITE);
-        hpLbl.setForeground(Color.WHITE);
-        spLbl.setForeground(Color.WHITE);
-        strLbl.setForeground(Color.WHITE);
-        dexLbl.setForeground(Color.WHITE);
-        knoLbl.setForeground(Color.WHITE);
-        wisLbl.setForeground(Color.WHITE);
+        vorschauklasseLbl.setForeground(Color.WHITE);
+        vorschauhpLbl.setForeground(Color.WHITE);
+        vorschauspLbl.setForeground(Color.WHITE);
+        vorschaustrLbl.setForeground(Color.WHITE);
+        vorschaudexLbl.setForeground(Color.WHITE);
+        vorschauknoLbl.setForeground(Color.WHITE);
+        vorschauwisLbl.setForeground(Color.WHITE);
+        vorschauatkLbl.setForeground(Color.WHITE);
+        vorschaudefLbl.setForeground(Color.WHITE);
 
-        layoutStats.putConstraint(SpringLayout.HORIZONTAL_CENTER, klasseLbl, 0, SpringLayout.HORIZONTAL_CENTER,statsPanel);
-        layoutStats.putConstraint(SpringLayout.VERTICAL_CENTER, hpLbl, 30, SpringLayout.VERTICAL_CENTER,klasseLbl);
-        layoutStats.putConstraint(SpringLayout.VERTICAL_CENTER, spLbl, 30, SpringLayout.VERTICAL_CENTER,klasseLbl);
-        layoutStats.putConstraint(SpringLayout.VERTICAL_CENTER, strLbl, 20, SpringLayout.VERTICAL_CENTER,hpLbl);
-        layoutStats.putConstraint(SpringLayout.VERTICAL_CENTER, dexLbl, 20, SpringLayout.VERTICAL_CENTER,strLbl);
-        layoutStats.putConstraint(SpringLayout.VERTICAL_CENTER, knoLbl, 20, SpringLayout.VERTICAL_CENTER,spLbl);
-        layoutStats.putConstraint(SpringLayout.VERTICAL_CENTER, wisLbl, 20, SpringLayout.VERTICAL_CENTER,knoLbl);
+        layoutStats.putConstraint(SpringLayout.HORIZONTAL_CENTER, vorschauklasseLbl, 0, SpringLayout.HORIZONTAL_CENTER,statsPanel);
+        layoutStats.putConstraint(SpringLayout.VERTICAL_CENTER, vorschauhpLbl, 30, SpringLayout.VERTICAL_CENTER,vorschauklasseLbl);
+        layoutStats.putConstraint(SpringLayout.VERTICAL_CENTER, vorschauatkLbl, 20, SpringLayout.VERTICAL_CENTER,vorschauhpLbl);
+        layoutStats.putConstraint(SpringLayout.VERTICAL_CENTER, vorschaustrLbl, 20, SpringLayout.VERTICAL_CENTER,vorschauatkLbl);
+        layoutStats.putConstraint(SpringLayout.VERTICAL_CENTER, vorschaudexLbl, 20, SpringLayout.VERTICAL_CENTER,vorschaustrLbl);
 
-        layoutStats.putConstraint(SpringLayout.WEST, hpLbl, 50, SpringLayout.WEST,statsPanel);
-        layoutStats.putConstraint(SpringLayout.WEST, strLbl, 50, SpringLayout.WEST,statsPanel);
-        layoutStats.putConstraint(SpringLayout.WEST, dexLbl, 50, SpringLayout.WEST,statsPanel);
-        layoutStats.putConstraint(SpringLayout.WEST, spLbl, 250, SpringLayout.WEST,statsPanel);
-        layoutStats.putConstraint(SpringLayout.WEST, knoLbl, 250, SpringLayout.WEST,statsPanel);
-        layoutStats.putConstraint(SpringLayout.WEST, wisLbl, 250, SpringLayout.WEST,statsPanel);
+        layoutStats.putConstraint(SpringLayout.VERTICAL_CENTER, vorschauspLbl, 30, SpringLayout.VERTICAL_CENTER,vorschauklasseLbl);
+        layoutStats.putConstraint(SpringLayout.VERTICAL_CENTER, vorschaudefLbl, 20, SpringLayout.VERTICAL_CENTER,vorschauspLbl);
+        layoutStats.putConstraint(SpringLayout.VERTICAL_CENTER, vorschauknoLbl, 20, SpringLayout.VERTICAL_CENTER,vorschaudefLbl);
+        layoutStats.putConstraint(SpringLayout.VERTICAL_CENTER, vorschauwisLbl, 20, SpringLayout.VERTICAL_CENTER,vorschauknoLbl);
+
+        layoutStats.putConstraint(SpringLayout.WEST, vorschauhpLbl, 50, SpringLayout.WEST,statsPanel);
+        layoutStats.putConstraint(SpringLayout.WEST, vorschauatkLbl, 50, SpringLayout.WEST,statsPanel);
+        layoutStats.putConstraint(SpringLayout.WEST, vorschaustrLbl, 50, SpringLayout.WEST,statsPanel);
+        layoutStats.putConstraint(SpringLayout.WEST, vorschaudexLbl, 50, SpringLayout.WEST,statsPanel);
+        layoutStats.putConstraint(SpringLayout.WEST, vorschauspLbl, 250, SpringLayout.WEST,statsPanel);
+        layoutStats.putConstraint(SpringLayout.WEST, vorschaudefLbl, 250, SpringLayout.WEST,statsPanel);
+        layoutStats.putConstraint(SpringLayout.WEST, vorschauknoLbl, 250, SpringLayout.WEST,statsPanel);
+        layoutStats.putConstraint(SpringLayout.WEST, vorschauwisLbl, 250, SpringLayout.WEST,statsPanel);
 
 
         layoutStats.putConstraint(SpringLayout.HORIZONTAL_CENTER, startBtn, 0, SpringLayout.HORIZONTAL_CENTER,statsPanel);
@@ -422,54 +483,66 @@ public class SpielPanel extends JPanel {
 
         kriegerBtn.addActionListener(e -> {
             spieler.setName("Krieger");
+            spieler.setLvl(1);
             spieler.setHp(30);
             spieler.setSp(15);
             spieler.setMaxHp(30);
             spieler.setMaxSp(15);
+            spieler.setAtk(15);
+            spieler.setDef(15);
             spieler.setStr(10);
             spieler.setDex(8);
             spieler.setKno(2);
             spieler.setWis(3);
             vorschauLbl.setIcon(new ImageIcon("res/Klassen/Krieger.png"));
-            updateStatsLbl();
+            updateStatsVorschauLbl();
         });
         jaegerBtn.addActionListener(e -> {
             spieler.setName("Jäger");
+            spieler.setLvl(1);
             spieler.setHp(15);
             spieler.setSp(20);
             spieler.setMaxHp(15);
             spieler.setMaxSp(20);
+            spieler.setAtk(15);
+            spieler.setDef(10);
             spieler.setStr(3);
             spieler.setDex(12);
             spieler.setKno(4);
             spieler.setWis(6);vorschauLbl.setIcon(new ImageIcon("res/Klassen/Jaeger.png"));
-            updateStatsLbl();
+            updateStatsVorschauLbl();
         });
         magierBtn.addActionListener(e -> {
             spieler.setName("Magier");
+            spieler.setLvl(1);
             spieler.setHp(15);
             spieler.setSp(30);
             spieler.setMaxHp(15);
             spieler.setMaxSp(30);
+            spieler.setAtk(20);
+            spieler.setDef(10);
             spieler.setStr(1);
             spieler.setDex(3);
             spieler.setKno(15);
             spieler.setWis(3);
             vorschauLbl.setIcon(new ImageIcon("res/Klassen/Magier.png"));
-            updateStatsLbl();
+            updateStatsVorschauLbl();
         });
         klerikerBtn.addActionListener(e -> {
             spieler.setName("Kleriker");
+            spieler.setLvl(1);
             spieler.setHp(20);
             spieler.setSp(20);
             spieler.setMaxHp(20);
             spieler.setMaxSp(20);
+            spieler.setAtk(15);
+            spieler.setDef(15);
             spieler.setStr(3);
             spieler.setDex(4);
             spieler.setKno(3);
             spieler.setWis(10);
             vorschauLbl.setIcon(new ImageIcon("res/Klassen/Kleriker.png"));
-            updateStatsLbl();
+            updateStatsVorschauLbl();
         });
         //endregion
         //region auswahlPanelRechts
@@ -482,13 +555,15 @@ public class SpielPanel extends JPanel {
         layout.putConstraint(SpringLayout.EAST, auswahlPanelRechts, 0, SpringLayout.EAST, this);
         //endregion
 
-        statsPanel.add(klasseLbl);
-        statsPanel.add(hpLbl);
-        statsPanel.add(spLbl);
-        statsPanel.add(strLbl);
-        statsPanel.add(dexLbl);
-        statsPanel.add(knoLbl);
-        statsPanel.add(wisLbl);
+        statsPanel.add(vorschauklasseLbl);
+        statsPanel.add(vorschauhpLbl);
+        statsPanel.add(vorschauspLbl);
+        statsPanel.add(vorschauatkLbl);
+        statsPanel.add(vorschaudefLbl);
+        statsPanel.add(vorschaustrLbl);
+        statsPanel.add(vorschaudexLbl);
+        statsPanel.add(vorschauknoLbl);
+        statsPanel.add(vorschauwisLbl);
         statsPanel.add(startBtn);
         startBtn.addActionListener(e -> {
             if (!spieler.getName().equals(null)) {
@@ -511,17 +586,50 @@ public class SpielPanel extends JPanel {
                         Skill5Aenderung(skillWyvernSchuss);
                         break;
                 }
+                SkillInit();
             }
         });
     }
-    public void updateStatsLbl() {
-        klasseLbl.setText(spieler.getName());
-        hpLbl.setText("<html><font color='#C70039'>HP: " + spieler.getHp());
-        spLbl.setText("<html><font color='#234ba1'>SP: " + spieler.getSp());
-        strLbl.setText("<html><font color='#ff0000'>Stärke: " + spieler.getStr());
-        dexLbl.setText("<html><font color='#3cb371'>Geschick: " + spieler.getDex());
-        knoLbl.setText("<html><font color='#94d0ff'>Intelligenz: " + spieler.getKno());
-        wisLbl.setText("<html><font color='#ffe400'>Weisheit: " + spieler.getWis());
+    public void updateStatsVorschauLbl() {
+        vorschauklasseLbl.setText(spieler.getName());
+        vorschauhpLbl.setText("<html><font color='#C70039'>HP: " + spieler.getHp());
+        vorschauspLbl.setText("<html><font color='#234ba1'>SP: " + spieler.getSp());
+        vorschauatkLbl.setText("Angriff: " + spieler.getAtk());
+        vorschaudefLbl.setText("Verteidigung: " + spieler.getDef());
+        vorschaustrLbl.setText("<html><font color='#ff0000'>Stärke: " + spieler.getStr());
+        vorschaudexLbl.setText("<html><font color='#3cb371'>Geschick: " + spieler.getDex());
+        vorschauknoLbl.setText("<html><font color='#94d0ff'>Intelligenz: " + spieler.getKno());
+        vorschauwisLbl.setText("<html><font color='#ffe400'>Weisheit: " + spieler.getWis());
+    }
+    public void setGameOverScreen() {
+        removeAll();
+        ImageIcon icon = new ImageIcon("res/Hintergrund/GameOver.jpg");
+        hintergrundBild = icon.getImage();
+        repaint();
+        revalidate();
+
+        SpringLayout layout = new SpringLayout();
+        setLayout(layout);
+
+        JLabel gameOverLbl = new JLabel("Game Over");
+        gameOverLbl.setFont(new Font("Times New Roman", Font.BOLD, 90));
+        gameOverLbl.setForeground(Color.WHITE);
+        add(gameOverLbl);
+
+        JButton gameOverBtn = new JButton("Neustart");
+        gameOverBtn.setForeground(Color.WHITE);
+        gameOverBtn.setBackground(Color.BLACK);
+        add(gameOverBtn);
+
+        layout.putConstraint(SpringLayout.HORIZONTAL_CENTER,gameOverLbl,0,SpringLayout.HORIZONTAL_CENTER, this);
+        layout.putConstraint(SpringLayout.HORIZONTAL_CENTER,gameOverBtn,0,SpringLayout.HORIZONTAL_CENTER, this);
+        layout.putConstraint(SpringLayout.VERTICAL_CENTER,gameOverLbl,100,SpringLayout.NORTH, this);
+        layout.putConstraint(SpringLayout.VERTICAL_CENTER,gameOverBtn,-80,SpringLayout.SOUTH, this);
+
+        gameOverBtn.addActionListener(e -> {
+            spielFrame.dispose();
+            new Spiel();
+        });
     }
     @Override
     public void paintComponent(Graphics g) {

@@ -66,8 +66,8 @@ public class Skills {
     public static Skills skillAutomatischerSchuss = new Skills("Auto. Schuss", "dex", 60,150,1, new ImageIcon("res/Skills/Ritter/active9.png"));
     public static Skills skillWyvernSchuss = new Skills("Wyvernschuss", "dex", 150,60,1, new ImageIcon("res/Skills/Ritter/active10.png"));
 
-    //kno #94d0ff
-    //wis #ffe400
+    //kno <html><font color='#94d0ff'>
+    //wis <html><font color='#ffe400'>
 
 
     public int getGenauigkeit() {
