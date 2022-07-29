@@ -1,9 +1,10 @@
 package Charaktere;
 
 import javax.swing.*;
+import java.util.Random;
 
 public abstract class Charaktere {
-    String name;
+    String name, mod;
     int hp, maxHp, sp, maxSp, exp, lvl, atk, def, str, dex, kno, wis;
     ImageIcon bild;
 
@@ -35,13 +36,22 @@ public abstract class Charaktere {
         this.def = def;
     }
 
-    public Charaktere(String name, int maxHp, int maxSp, int exp, int lvl, int atk, int def,
+    public String getMod() {
+        return mod;
+    }
+
+    public void setMod(String mod) {
+        this.mod = mod;
+    }
+
+    public Charaktere(String name, int maxHp, int maxSp, String mod, int exp, int lvl, int atk, int def,
                       int str, int dex, int kno, int wis, ImageIcon bild) {
         this.name = name;
         this.maxHp = maxHp;
         this.hp = maxHp;
         this.maxSp = maxSp;
         this.sp = maxSp;
+        this.mod = mod;
         this.exp = exp;
         this.lvl = lvl;
         this.atk = atk;
@@ -143,4 +153,5 @@ public abstract class Charaktere {
 
     public abstract boolean amLeben();
     public abstract int angriff(String modifier, int anzahlAngriffe);
+    public abstract int verteidigung(String mod);
 }
