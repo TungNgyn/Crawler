@@ -12,7 +12,7 @@ import static Skills.Skills.*;
 
 public class SpielPanel extends JPanel {
     Image hintergrundBild;
-    public static JPanel gamePanel,statPanel,btnPanel,textPanel,skillInfoPanel,gegnerPanel,naviPanel;
+    public static JPanel gamePanel,statPanel,btnPanel,textPanel,skillInfoPanel,gegnerPanel,naviPanel,lagerPanel;
     public static JButton skillBtn1, skillBtn2, skillBtn3, skillBtn4, skillBtn5, strUpBtn, dexUpBtn, knoUpBtn, wisUpBtn,
             navi1Btn,navi2Btn,navi3Btn,navi4Btn,navi5Btn,navi6Btn;
     public static JLabel skillLblName, skillLblKraft, skillLblGenauigkeit, spielerNameLbl, spielerHp,
@@ -155,6 +155,18 @@ public class SpielPanel extends JPanel {
         naviPanel.add(navi5Btn);
         naviPanel.add(navi6Btn);
         gamePanel.add(naviPanel);
+        //endregion
+        //region lager
+        lagerPanel = new JPanel();
+        SpringLayout layoutLager = new SpringLayout();
+//        lagerPanel.setLayout(layoutLager);
+        lagerPanel.setPreferredSize(new Dimension(490,285));
+        lagerPanel.setBackground(Color.BLACK);
+
+        JLabel lagerBildLbl = new JLabel(new ImageIcon("res/NaviBilder/Lager.png"));
+        lagerPanel.setVisible(false);
+        lagerPanel.add(lagerBildLbl);
+        gamePanel.add(lagerPanel);
         //endregion
         //endregion
         //region statpanel

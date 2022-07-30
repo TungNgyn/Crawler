@@ -15,10 +15,8 @@ import java.awt.event.MouseListener;
 import java.util.Random;
 
 import static Main.SpielPanel.*;
-import static Navigation.Navigation.naviKampf;
-import static Navigation.Navigation.naviLager;
+import static Navigation.Navigation.*;
 import static Skills.Skills.*;
-import static Skills.Skills.skillWyvernSchuss;
 
 
 public class Spiel {
@@ -51,9 +49,9 @@ public class Spiel {
     }
     public static void NaviInitialisieren() {
         naviListe[0] = naviKampf;
-        naviListe[1] = Navigation.naviLager;
-        naviListe[2] = Navigation.naviEvent;
-        naviListe[3] = Navigation.naviBoss;
+        naviListe[1] = naviLager;
+        naviListe[2] = naviEvent;
+        naviListe[3] = naviBoss;
     }
     public static void Test() {
         UpdateSpieler();
@@ -142,7 +140,7 @@ public class Spiel {
         gegner.setHp(gegner.getMaxHp());
         gegner.setMaxSp(x.getMaxSp()+(10*lvl));
         gegner.setSp(gegner.getMaxSp());
-        gegner.setExp(x.getExp()+(10*lvl));
+        gegner.setExp(x.getExp());
         gegner.setStr(x.getStr()+(1*lvl));
         gegner.setDex(x.getDex()+(1*lvl));
         gegner.setKno(x.getKno()+(1*lvl));
@@ -297,7 +295,7 @@ public class Spiel {
         if (spielerAngriff <= 0) spielerAngriff = 0;
         gegner.setHp(gegner.getHp() - spielerAngriff);
         gegnerHpBar.setValue(gegner.getHp());
-        textLog.append("\n" + spieler.getName() + " verursacht " + spielerAngriff + " Schaden an " + gegner.getName() + "!");
+        textLog.append("\n" + spieler.getName() + " verursacht " + spielerAngriff + " Schaden!");
     }
     public static void GegnerAngriff(String mod, int kraft, int genauigkeit) {
         int spielerVerteidigung = spieler.verteidigung(gegner.getMod());
@@ -306,7 +304,7 @@ public class Spiel {
         spieler.setHp(spieler.getHp() - gegnerAngriff);
         spielerHp.setText(spieler.getHp() + "/" + spieler.getMaxHp());
         spielerHpBar.setValue(spieler.getHp());
-        textLog.append("\n" + gegner.getName() + " verursacht " + gegnerAngriff + " Schaden an " + spieler.getName() + "!");
+        textLog.append("\n" + gegner.getName() + " verursacht " + gegnerAngriff + " Schaden an!");
     }
     //endregion
     //region exp/lvl
@@ -336,24 +334,46 @@ public class Spiel {
             public void actionPerformed(ActionEvent e) {
                 switch (x.getName()) {
                     case "Kampf":
-                        Random rnd = new Random();
-                        int i = rnd.nextInt(2);
-                        Encounter(gegnerListeT1[i],1);
+                        NavigationKampf();
+                        break;
+                    case "Lager":
+                        NavigationLager();
                         break;
                 }
             }
         };
         navi1Btn.addActionListener(Navi1);
     }
+    public static void NavigationKampf() {
+        Random rnd = new Random();
+        int i = rnd.nextInt(2);
+        Encounter(gegnerListeT1[i],1);
+    }
+    public static void NavigationLager() {
+        lagerPanel.setVisible(true);
+        naviPanel.setVisible(false);
+        spieler.setHp(spieler.getMaxHp());
+        spieler.setSp(spieler.getMaxSp());
+        UpdateSpieler();
+        textLog.append("\n" + spieler.getName() + " erholt sich am Lagerfeuer.");
+        Timer timer = new Timer(4000, e -> {
+            lagerPanel.setVisible(false);
+            naviPanel.setVisible(true);
+        });
+        timer.setRepeats(false);
+        timer.start();
+    }
+
     public static void Navi2Button(Navigation x) {
         Navi2 = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 switch (x.getName()) {
                     case "Kampf":
-                        Random rnd = new Random();
-                        int i = rnd.nextInt(2);
-                        Encounter(gegnerListeT1[i],1);
+                        NavigationKampf();
+                        break;
+                    case "Lager":
+                        NavigationLager();
                         break;
                 }
             }
