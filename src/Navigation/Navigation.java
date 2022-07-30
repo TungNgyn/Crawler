@@ -21,8 +21,8 @@ public class Navigation {
 
 
 
-    public static Navigation naviLager = new Navigation("Lager",new ImageIcon("res/Icons/Instagram_2.png"));
-    public static Navigation naviKampf = new Navigation("Kampf",new ImageIcon("res/Icons/Battle.png"));
-    public static Navigation naviEvent = new Navigation("Event",new ImageIcon("res/Icons/Reddit.png"));
-    public static Navigation naviBoss = new Navigation("Boss",new ImageIcon("res/Icons/TikTok.png"));
+    public static Navigation naviLager = new Navigation("Lager",new ImageIcon("res/Icons/Lager.png"));
+    public static Navigation naviKampf = new Navigation("Kampf",new ImageIcon("res/Icons/Kampf.png"));
+    public static Navigation naviEvent = new Navigation("Event",new ImageIcon("res/Icons/Event.png"));
+    public static Navigation naviBoss = new Navigation("Boss",new ImageIcon("res/Icons/Boss.png"));
 }

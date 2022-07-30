@@ -113,12 +113,12 @@ public class SpielPanel extends JPanel {
         naviPanel.setPreferredSize(new Dimension(490,285));
         naviPanel.setBackground(Color.BLACK);
 
-        navi1Btn = new JButton(new ImageIcon("res/Icons/Battle.png"));
-        navi2Btn = new JButton(new ImageIcon("res/Icons/Instagram_2.png"));
-        navi3Btn = new JButton(new ImageIcon("res/Icons/Battle.png"));
-        navi4Btn = new JButton(new ImageIcon("res/Icons/Reddit.png"));
-        navi5Btn = new JButton(new ImageIcon("res/Icons/TikTok.png"));
-        navi6Btn = new JButton(new ImageIcon("res/Icons/Reddit.png"));
+        navi1Btn = new JButton();
+        navi2Btn = new JButton();
+        navi3Btn = new JButton();
+        navi4Btn = new JButton();
+        navi5Btn = new JButton();
+        navi6Btn = new JButton();
         naviTitelLbl = new JLabel("Labyrinth");
         naviEbeneLbl = new JLabel("Ebene 1");
 

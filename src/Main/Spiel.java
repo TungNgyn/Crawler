@@ -29,9 +29,10 @@ public class Spiel {
     static ActionListener Skill1,Skill2,Skill3,Skill4,Skill5,Navi1,Navi2,Navi3,Navi4,Navi5,Navi6;
 
     static Gegner[] gegnerListeT1 = new Gegner[2];
-    static Navigation[] naviListe = new Navigation[4];
+    static Navigation[] naviListe = new Navigation[10];
     static int expNeed = 50;
     static int skillpunkte = 0;
+    static int raumCounter = 0;
 
     public Spiel() {
         spieler = new Spieler();
@@ -49,9 +50,15 @@ public class Spiel {
     }
     public static void NaviInitialisieren() {
         naviListe[0] = naviKampf;
-        naviListe[1] = naviLager;
-        naviListe[2] = naviEvent;
-        naviListe[3] = naviBoss;
+        naviListe[1] = naviKampf;
+        naviListe[2] = naviKampf;
+        naviListe[3] = naviKampf;
+        naviListe[4] = naviLager;
+        naviListe[5] = naviLager;
+        naviListe[6] = naviLager;
+        naviListe[7] = naviEvent;
+        naviListe[8] = naviEvent;
+        naviListe[9] = naviBoss;
     }
     public static void Test() {
         UpdateSpieler();
@@ -198,18 +205,14 @@ public class Spiel {
                                     spielPanel.setGameOverScreen();
                                 }
                                 if (!gegner.amLeben()) {
-                                    UpdateExp(gegner.getExp());
-                                    KampfEnde();
-                                    textLog.append("\nKampf gewonnen!\n" + gegner.getExp() + " Erfahrungspunkte erhalten.");
+                                    KampfGewonnen();
                                 }
                                 setSkills();
                             });
                             timer3.setRepeats(false);
                             timer3.start();
                         } else if (!gegner.amLeben()) {
-                            UpdateExp(gegner.getExp());
-                            KampfEnde();
-                            textLog.append("\nKampf gewonnen!\n" + gegner.getExp() + " Erfahrungspunkte erhalten.");
+                            KampfGewonnen();
                             setSkills();
                         } else if (!spieler.amLeben()) {
                             System.out.println("Verloren");
@@ -220,7 +223,7 @@ public class Spiel {
                     timer2.setRepeats(false);
                     timer2.start();
                 } else if (treffer >= genauigkeit) {
-                    textLog.append("\nVerfehlt...");
+                    textLog.append("\nDer Angriff verfehlt...");
                     Timer timer2 = new Timer(700, e1 -> {
                         if (gegner.amLeben() & spieler.amLeben()) {
                             GegnerAngriff(gegner.getMod(), kraft, genauigkeit);
@@ -230,19 +233,14 @@ public class Spiel {
                                     spielPanel.setGameOverScreen();
                                 }
                                 if (!gegner.amLeben()) {
-                                    System.out.println("Gewonnen");
-                                    UpdateExp(gegner.getExp());
-                                    KampfEnde();
-                                    textLog.append("\nKampf gewonnen!\n" + gegner.getExp() + " Erfahrungspunkte erhalten.");
+                                    KampfGewonnen();
                                 }
                                 setSkills();
                             });
                             timer3.setRepeats(false);
                             timer3.start();
                         } else if (!gegner.amLeben()) {
-                            UpdateExp(gegner.getExp());
-                            KampfEnde();
-                            textLog.append("\nKampf gewonnen!\n" + gegner.getExp() + " Erfahrungspunkte erhalten.");
+                            KampfGewonnen();
                             setSkills();
                         } else if (!spieler.amLeben()) {
                             KampfEnde();
@@ -263,18 +261,14 @@ public class Spiel {
                                     spielPanel.setGameOverScreen();
                                 }
                                 if (!gegner.amLeben()) {
-                                    UpdateExp(gegner.getExp());
-                                    KampfEnde();
-                                    textLog.append("\nKampf gewonnen!\n" + gegner.getExp() + " Erfahrungspunkte erhalten.");
+                                    KampfGewonnen();
                                 }
                                 setSkills();
                             });
                             timer3.setRepeats(false);
                             timer3.start();
                         } else if (!gegner.amLeben()) {
-                            UpdateExp(gegner.getExp());
-                            KampfEnde();
-                            textLog.append("\nKampf gewonnen!\n" + gegner.getExp() + " Erfahrungspunkte erhalten.");
+                            KampfGewonnen();
                             setSkills();
                         } else if (!spieler.amLeben()) {
                             KampfEnde();
@@ -306,6 +300,11 @@ public class Spiel {
         spielerHpBar.setValue(spieler.getHp());
         textLog.append("\n" + gegner.getName() + " verursacht " + gegnerAngriff + " Schaden an!");
     }
+    public static void KampfGewonnen() {
+        UpdateExp(gegner.getExp());
+        KampfEnde();
+        textLog.append("\nKampf gewonnen!\n" + gegner.getExp() + " Erfahrungspunkte erhalten.");
+    }
     //endregion
     //region exp/lvl
     public static void UpdateExp(int x) {
@@ -327,27 +326,102 @@ public class Spiel {
     }
     //endregion
     //region navigation
-    public static void Navi1Button(Navigation x) {
-        navi1Btn.setIcon(x.getBild());
+    public static void Navi1Button(Navigation x, Navigation y, Navigation z) {
         Navi1 = new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e1) {
+                Random rnd = new Random();
+                raumCounter++;
+                int a = rnd.nextInt(naviListe.length);
+                int b = rnd.nextInt(naviListe.length);
+                int c = rnd.nextInt(naviListe.length);
+                int d = rnd.nextInt(naviListe.length);
+
                 switch (x.getName()) {
                     case "Kampf":
-                        NavigationKampf();
+//                        NavigationKampf();
+                        System.out.println("Kampf");
                         break;
                     case "Lager":
-                        NavigationLager();
+//                        NavigationLager();
+                        System.out.println("Lager");
+                        break;
+                    case "Event":
+                        System.out.println("Event");
+                        break;
+                    case "Boss":
+                        System.out.println("Boss");
                         break;
                 }
+
+                navi1Btn.setIcon(y.getBild());
+                navi1Btn.removeActionListener(Navi1);
+                Navi1Button(y,naviListe[a],naviListe[b]);
+                navi2Btn.removeActionListener(Navi2);
+                Navi2Button(z,naviListe[c],naviListe[d]);
+                navi3Btn.setIcon(new ImageIcon("res/Icons/" + naviListe[a].getName() + ".png"));
+                navi4Btn.setIcon(new ImageIcon("res/Icons/" + naviListe[b].getName() + ".png"));
+                navi5Btn.setIcon(new ImageIcon("res/Icons/" + naviListe[c].getName() + ".png"));
+                navi6Btn.setIcon(new ImageIcon("res/Icons/" + naviListe[d].getName() + ".png"));
             }
         };
         navi1Btn.addActionListener(Navi1);
+    }
+    public static void Navi2Button(Navigation x, Navigation y, Navigation z) {
+        Navi1 = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e1) {
+                Random rnd = new Random();
+                raumCounter++;
+                int a = rnd.nextInt(naviListe.length);
+                int b = rnd.nextInt(naviListe.length);
+                int c = rnd.nextInt(naviListe.length);
+                int d = rnd.nextInt(naviListe.length);
+
+                switch (x.getName()) {
+                    case "Kampf":
+//                        NavigationKampf();
+                        System.out.println("Kampf");
+                        break;
+                    case "Lager":
+//                        NavigationLager();
+                        System.out.println("Lager");
+                        break;
+                    case "Event":
+                        System.out.println("Event");
+                        break;
+                    case "Boss":
+                        System.out.println("Boss");
+                        break;
+                }
+
+                navi1Btn.setIcon(y.getBild());
+                navi1Btn.removeActionListener(Navi1);
+                Navi1Button(z,naviListe[c],naviListe[d]);
+                navi2Btn.removeActionListener(Navi2);
+                Navi2Button(y,);
+                navi3Btn.setIcon(new ImageIcon("res/Icons/" + naviListe[a].getName() + ".png"));
+                navi4Btn.setIcon(new ImageIcon("res/Icons/" + naviListe[b].getName() + ".png"));
+                navi5Btn.setIcon(new ImageIcon("res/Icons/" + naviListe[c].getName() + ".png"));
+                navi6Btn.setIcon(new ImageIcon("res/Icons/" + naviListe[d].getName() + ".png"));
+            }
+        };
+        navi2Btn.setIcon(x.getBild());
+    }
+    public static void Navi3Button(Navigation x) {
+
+    }
+    public static void Navi4Button(Navigation x) {
+    }
+    public static void Navi5Button(Navigation x) {
+    }
+    public static void Navi6Button(Navigation x) {
     }
     public static void NavigationKampf() {
         Random rnd = new Random();
         int i = rnd.nextInt(2);
         Encounter(gegnerListeT1[i],1);
+        textLog.append("\nEin " + gegner.getName() + " ist erschienen!");
     }
     public static void NavigationLager() {
         lagerPanel.setVisible(true);
@@ -362,23 +436,6 @@ public class Spiel {
         });
         timer.setRepeats(false);
         timer.start();
-    }
-
-    public static void Navi2Button(Navigation x) {
-        Navi2 = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                switch (x.getName()) {
-                    case "Kampf":
-                        NavigationKampf();
-                        break;
-                    case "Lager":
-                        NavigationLager();
-                        break;
-                }
-            }
-        };
-        navi2Btn.addActionListener(Navi2);
     }
     //endregion
     public static void setSkills() {
@@ -400,8 +457,27 @@ public class Spiel {
         }
     }
     public static void setNavi() {
-        Navi1Button(naviKampf);
-        Navi2Button(naviLager);
+        Random rnd = new Random();
+        int a = rnd.nextInt(naviListe.length);
+        int b = rnd.nextInt(naviListe.length);
+        int c = rnd.nextInt(naviListe.length);
+        int d = rnd.nextInt(naviListe.length);
+        int e = rnd.nextInt(naviListe.length);
+        int f = rnd.nextInt(naviListe.length);
+
+        Navi1Button(naviListe[a],naviListe[c],naviListe[d]);
+        Navi2Button(naviListe[b],naviListe[e],naviListe[f]);
+        Navi3Button(naviListe[c]);
+        Navi4Button(naviListe[d]);
+        Navi5Button(naviListe[e]);
+        Navi6Button(naviListe[f]);
+
+        navi1Btn.setIcon(naviListe[a].getBild());
+        navi2Btn.setIcon(naviListe[b].getBild());
+        navi3Btn.setIcon(naviListe[c].getBild());
+        navi4Btn.setIcon(naviListe[d].getBild());
+        navi5Btn.setIcon(naviListe[e].getBild());
+        navi6Btn.setIcon(naviListe[f].getBild());
     }
     //region Skillpoints
     public static void SkillPunkte() {
