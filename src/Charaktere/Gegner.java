@@ -9,8 +9,8 @@ public class Gegner extends Charaktere{
     public Gegner() {
 
     }
-    public Gegner(String name, int maxHp, int maxSp, String mod, int exp, int lvl, int atk, int def, int str, int dex, int kno, int wis, ImageIcon bild) {
-        super(name, maxHp, maxSp, mod, exp, lvl, atk, def, str, dex, kno, wis, bild);
+    public Gegner(String name, int maxHp, int maxSp, String mod, int exp, int lvl, int atk, int def, int str, int dex, int kno, int wis, int gold, ImageIcon bild) {
+        super(name, maxHp, maxSp, mod, exp, lvl, atk, def, str, dex, kno, wis, gold,bild);
     }
 
     @Override
@@ -40,8 +40,6 @@ public class Gegner extends Charaktere{
         double range2 =  angriffsWert+(angriffsWert/(10));
         Random rng = new Random();
         angriffsWert = rng.nextDouble(range1,range2);
-        System.out.println("gegnerAtk1 " + range1);
-        System.out.println("gegnerAtk2 " + range2);
         return (int) angriffsWert;
     }
     public int verteidigung(String mod) {
@@ -64,11 +62,13 @@ public class Gegner extends Charaktere{
         double range2 =  verteidigung+(verteidigung/(10));
         Random rng = new Random();
         verteidigung = rng.nextDouble(range1,range2);
-        System.out.println("gegnerDef1 " + range1);
-        System.out.println("gegnerDef2 " + range2);
         return (int) verteidigung;
     }
 
-    public static Gegner fledermaus = new Gegner("Fledermaus", 10,0,"dex",10,1,15,15,1,4,1,2,new ImageIcon("res/Gegner/Fledermaus.png"));
-    public static Gegner schneemann = new Gegner("Schneemann", 20,0,"str",20,1,15,15,3,2,3,1,new ImageIcon("res/Gegner/Schneemann.png"));
+    public static Gegner gegnerFledermaus = new Gegner("Fledermaus", 10,0,"dex",
+            10,1,15,15,1,4,1,2,3,new ImageIcon("res/Gegner/Fledermaus.png"));
+    public static Gegner gegnerSchneemann = new Gegner("Schneemann", 20,0,"str",
+            20,1,15,15,3,2,3,1,5,new ImageIcon("res/Gegner/Schneemann.png"));
+    public static Gegner gegnerBehemoth = new Gegner("Behemoth", 20,0,"str",
+            50,1,45,40,12,4,6,3,50,new ImageIcon("res/Gegner/Behemoth.png"));
 }

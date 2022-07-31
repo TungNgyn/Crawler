@@ -12,8 +12,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 import java.util.Random;
 
+import static Charaktere.Gegner.*;
 import static Main.SpielPanel.*;
 import static Navigation.Navigation.*;
 import static Skills.Skills.*;
@@ -28,11 +30,14 @@ public class Spiel {
     static boolean kampf;
     static ActionListener Skill1,Skill2,Skill3,Skill4,Skill5,Navi1,Navi2,Navi3,Navi4,Navi5,Navi6;
 
-    static Gegner[] gegnerListeT1 = new Gegner[2];
-    static Navigation[] naviListe = new Navigation[10];
+    static ArrayList<Gegner> gegnerListeT1 = new ArrayList<>();
+    static ArrayList<Navigation> naviListe = new ArrayList<>();
+    static ArrayList<Gegner> bossListe = new ArrayList<>();
     static int expNeed = 50;
     static int skillpunkte = 0;
     static int raumCounter = 0;
+    static int kampfRunde = 0;
+    static int skill1Kosten, skill2Kosten, skill3Kosten, skill4Kosten, skill5Kosten;
 
     public Spiel() {
         spieler = new Spieler();
@@ -45,20 +50,72 @@ public class Spiel {
         NaviInitialisieren();
     }
     public static void GegnerInitialisieren() {
-        gegnerListeT1[0] = Gegner.fledermaus;
-        gegnerListeT1[1] = Gegner.schneemann;
+        gegnerListeT1.add(gegnerFledermaus);
+        gegnerListeT1.add(gegnerSchneemann);
+        bossListe.add(gegnerBehemoth);
     }
     public static void NaviInitialisieren() {
-        naviListe[0] = naviKampf;
-        naviListe[1] = naviKampf;
-        naviListe[2] = naviKampf;
-        naviListe[3] = naviKampf;
-        naviListe[4] = naviLager;
-        naviListe[5] = naviLager;
-        naviListe[6] = naviLager;
-        naviListe[7] = naviEvent;
-        naviListe[8] = naviEvent;
-        naviListe[9] = naviBoss;
+        naviListe.removeAll(naviListe);
+        if (raumCounter < 10) {
+            for (int i = 0; i < 35; i++) {
+                naviListe.add(naviKampf);
+            }
+            for (int i = 0; i < 25; i++) {
+                naviListe.add(naviLager);
+            }
+            for (int i = 0; i < 10; i++) {
+                naviListe.add(naviLaden);
+            }
+            for (int i = 0; i < 10; i++) {
+                naviListe.add(naviSchatz);
+            }
+            for (int i = 0; i < 10; i++) {
+                naviListe.add(naviEvent);
+            }
+            for (int i = 0; i < 10; i++) {
+                naviListe.add(naviBoss);
+            }
+        }
+        if ((raumCounter >= 10) & (raumCounter < 25)){
+            for (int i = 0; i < 25; i++) {
+                naviListe.add(naviKampf);
+            }
+            for (int i = 0; i < 20; i++) {
+                naviListe.add(naviLager);
+            }
+            for (int i = 0; i < 10; i++) {
+                naviListe.add(naviLaden);
+            }
+            for (int i = 0; i < 10; i++) {
+                naviListe.add(naviSchatz);
+            }
+            for (int i = 0; i < 15; i++) {
+                naviListe.add(naviEvent);
+            }
+            for (int i = 0; i < 15; i++) {
+                naviListe.add(naviBoss);
+            }
+        }
+        if (raumCounter >= 25) {
+            for (int i = 0; i < 15; i++) {
+                naviListe.add(naviKampf);
+            }
+            for (int i = 0; i < 20; i++) {
+                naviListe.add(naviLager);
+            }
+            for (int i = 0; i < 10; i++) {
+                naviListe.add(naviLaden);
+            }
+            for (int i = 0; i < 10; i++) {
+                naviListe.add(naviSchatz);
+            }
+            for (int i = 0; i < 15; i++) {
+                naviListe.add(naviEvent);
+            }
+            for (int i = 0; i < 30; i++) {
+                naviListe.add(naviBoss);
+            }
+        }
     }
     public static void Test() {
         UpdateSpieler();
@@ -96,7 +153,7 @@ public class Spiel {
         encBtn.addActionListener(e -> {
             Random rnd = new Random();
             int i = rnd.nextInt(2);
-            Encounter(gegnerListeT1[i],1);
+            Encounter(gegnerListeT1.get(i),1);
         });
         lvlUpBtn.addActionListener(e -> {
             spieler.setExp(expNeed);
@@ -123,7 +180,9 @@ public class Spiel {
     public static void UpdateSpieler(){
         if (!spieler.amLeben()) spielPanel.setGameOverScreen();
         if (spieler.getHp() > spieler.getMaxHp()) spieler.setHp(spieler.getMaxHp());
+        if (spieler.getHp() <= 0) spieler.setHp(0);
         if (spieler.getSp() > spieler.getMaxSp()) spieler.setSp(spieler.getMaxSp());
+        if (spieler.getSp() <= 0) spieler.setSp(0);
 
         spielerNameLbl.setText(spieler.getName() + " Lvl " + spieler.getLvl());
         spielerHp.setText(spieler.getHp() + "/" + spieler.getMaxHp());
@@ -156,6 +215,7 @@ public class Spiel {
         gegner.setAtk(x.getAtk());
         gegner.setDef(x.getDef());
         gegner.setLvl(lvl);
+        gegner.setGold(x.getGold());
         gegnerBildLbl.setIcon(x.getBild());
         gegnerNameLbl.setText(x.getName() + " Lvl " + lvl);
         gegnerHpBar.setMaximum(gegner.getMaxHp());
@@ -164,34 +224,56 @@ public class Spiel {
     }
     public static void KampfBeginn() {
         kampf = true;
-        skillBtn1.setEnabled(true);
-        skillBtn2.setEnabled(true);
-        skillBtn3.setEnabled(true);
-        skillBtn4.setEnabled(true);
-        skillBtn5.setEnabled(true);
+        EnableSkillButtons();
         SpielPanel.gegnerPanel.setVisible(true);
+        kampfRunde = 0;
     }
     public static void KampfEnde() {
         Timer timer = new Timer(1500, e -> {
             kampf = false;
-            skillBtn1.setEnabled(false);
-            skillBtn2.setEnabled(false);
-            skillBtn3.setEnabled(false);
-            skillBtn4.setEnabled(false);
-            skillBtn5.setEnabled(false);
+            DisableSkillButtons();
             gegnerPanel.setVisible(false);
             naviPanel.setVisible(true);
         });
         timer.setRepeats(false);
         timer.start();
     }
+    public static void DisableSkillButtons() {
+        skillBtn1.setEnabled(false);
+        skillBtn2.setEnabled(false);
+        skillBtn3.setEnabled(false);
+        skillBtn4.setEnabled(false);
+        skillBtn5.setEnabled(false);
+    }
+    public static void EnableSkillButtons() {
+        skillBtn1.setEnabled(true);
+        skillBtn2.setEnabled(true);
+        skillBtn3.setEnabled(true);
+        skillBtn4.setEnabled(true);
+        skillBtn5.setEnabled(true);
+
+        if ((skill1.getHpKosten() > spieler.getHp()) | (skill1.getSpKosten() > spieler.getSp())) {
+            skillBtn1.setEnabled(false);
+        }
+        if ((skill2.getHpKosten() > spieler.getHp()) | (skill2.getSpKosten() > spieler.getSp())) {
+            skillBtn2.setEnabled(false);
+        }
+        if ((skill3.getHpKosten() > spieler.getHp()) | (skill3.getSpKosten() > spieler.getSp())) {
+            skillBtn3.setEnabled(false);
+        }
+        if ((skill4.getHpKosten() > spieler.getHp()) | (skill4.getSpKosten() > spieler.getSp())) {
+            skillBtn4.setEnabled(false);
+        }
+        if ((skill5.getHpKosten() > spieler.getHp()) | (skill5.getSpKosten() > spieler.getSp())) {
+            skillBtn5.setEnabled(false);
+        }
+    }
     public static void Kampf(String mod, int kraft, int genauigkeit) {
-        skillBtn1.removeActionListener(Skill1);
-        skillBtn2.removeActionListener(Skill2);
-        skillBtn3.removeActionListener(Skill3);
-        skillBtn4.removeActionListener(Skill4);
-        skillBtn5.removeActionListener(Skill5);
+        DisableSkillButtons();
+        kampfRunde++;
+        System.out.println("Kampfrunde: " + kampfRunde);
         int treffer = (int) (Math.random()*100);
+        System.out.println("Treffer: " + treffer);
         Timer timer = new Timer(100, e -> {
             if (spieler.amLeben() & gegner.amLeben()) {
                 if ((treffer < genauigkeit) & (treffer > 0)) {
@@ -207,15 +289,15 @@ public class Spiel {
                                 if (!gegner.amLeben()) {
                                     KampfGewonnen();
                                 }
-                                setSkills();
+                                if (spieler.amLeben() & (gegner.amLeben())) {
+                                    EnableSkillButtons();
+                                }
                             });
                             timer3.setRepeats(false);
                             timer3.start();
                         } else if (!gegner.amLeben()) {
                             KampfGewonnen();
-                            setSkills();
                         } else if (!spieler.amLeben()) {
-                            System.out.println("Verloren");
                             KampfEnde();
                             spielPanel.setGameOverScreen();
                         }
@@ -223,7 +305,7 @@ public class Spiel {
                     timer2.setRepeats(false);
                     timer2.start();
                 } else if (treffer >= genauigkeit) {
-                    textLog.append("\nDer Angriff verfehlt...");
+                    textLog.append("\n Der Angriff verfehlt...");
                     Timer timer2 = new Timer(700, e1 -> {
                         if (gegner.amLeben() & spieler.amLeben()) {
                             GegnerAngriff(gegner.getMod(), kraft, genauigkeit);
@@ -235,13 +317,14 @@ public class Spiel {
                                 if (!gegner.amLeben()) {
                                     KampfGewonnen();
                                 }
-                                setSkills();
+                                if (spieler.amLeben() & (gegner.amLeben())) {
+                                    EnableSkillButtons();
+                                }
                             });
                             timer3.setRepeats(false);
                             timer3.start();
                         } else if (!gegner.amLeben()) {
                             KampfGewonnen();
-                            setSkills();
                         } else if (!spieler.amLeben()) {
                             KampfEnde();
                             spielPanel.setGameOverScreen();
@@ -250,7 +333,7 @@ public class Spiel {
                     timer2.setRepeats(false);
                     timer2.start();
                 } else if (treffer == 0) {
-                    textLog.append("\nKritischer Treffer!");
+                    textLog.append("\n Kritischer Treffer!");
                     SpielerAngriff(mod, kraft*2, genauigkeit);
                     Timer timer2 = new Timer(700, e1 -> {
                         if (gegner.amLeben() & spieler.amLeben()) {
@@ -263,13 +346,14 @@ public class Spiel {
                                 if (!gegner.amLeben()) {
                                     KampfGewonnen();
                                 }
-                                setSkills();
+                                if (spieler.amLeben() & (gegner.amLeben())) {
+                                    EnableSkillButtons();
+                                }
                             });
                             timer3.setRepeats(false);
                             timer3.start();
                         } else if (!gegner.amLeben()) {
                             KampfGewonnen();
-                            setSkills();
                         } else if (!spieler.amLeben()) {
                             KampfEnde();
                             spielPanel.setGameOverScreen();
@@ -289,7 +373,7 @@ public class Spiel {
         if (spielerAngriff <= 0) spielerAngriff = 0;
         gegner.setHp(gegner.getHp() - spielerAngriff);
         gegnerHpBar.setValue(gegner.getHp());
-        textLog.append("\n" + spieler.getName() + " verursacht " + spielerAngriff + " Schaden!");
+        textLog.append("\n " + spieler.getName() + " verursacht " + spielerAngriff + " Schaden!");
     }
     public static void GegnerAngriff(String mod, int kraft, int genauigkeit) {
         int spielerVerteidigung = spieler.verteidigung(gegner.getMod());
@@ -298,17 +382,24 @@ public class Spiel {
         spieler.setHp(spieler.getHp() - gegnerAngriff);
         spielerHp.setText(spieler.getHp() + "/" + spieler.getMaxHp());
         spielerHpBar.setValue(spieler.getHp());
-        textLog.append("\n" + gegner.getName() + " verursacht " + gegnerAngriff + " Schaden an!");
+        textLog.append("\n " + gegner.getName() + " verursacht " + gegnerAngriff + " Schaden!");
     }
     public static void KampfGewonnen() {
         UpdateExp(gegner.getExp());
+        UpdateGold(gegner.getGold());
         KampfEnde();
-        textLog.append("\nKampf gewonnen!\n" + gegner.getExp() + " Erfahrungspunkte erhalten.");
+        textLog.append("\n Kampf gewonnen!");
+        textLog.append("\n " + gegner.getExp() + " Erfahrungspunkte erhalten.");
+        textLog.append("\n " + gegner.getGold() + " Gold erhalten.");
     }
     //endregion
     //region exp/lvl
+    public static void UpdateGold(int x) {
+        spieler.setGold(spieler.getGold() + x);
+        spielerGold.setText("" + spieler.getGold());
+    }
     public static void UpdateExp(int x) {
-        spieler.setExp(spieler.getExp()+x);
+        spieler.setExp(spieler.getExp() + x);
         spielerExp.setText("" + spieler.getExp());
         spielerExpBar.setValue(spieler.getExp());
         CheckLevelUp();
@@ -322,106 +413,112 @@ public class Spiel {
             expNeed = (int) ((5000/11)*((Math.pow(1.11,(spieler.getLvl())))-1));
             spielerExpBar.setMaximum(expNeed);
             SkillPunkte();
+            textLog.append("\n Level Up!");
         }
     }
     //endregion
     //region navigation
     public static void Navi1Button(Navigation x, Navigation y, Navigation z) {
+        navi1Btn.setIcon(x.getBild());
         Navi1 = new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e1) {
+            public void actionPerformed(ActionEvent e) {
                 Random rnd = new Random();
                 raumCounter++;
-                int a = rnd.nextInt(naviListe.length);
-                int b = rnd.nextInt(naviListe.length);
-                int c = rnd.nextInt(naviListe.length);
-                int d = rnd.nextInt(naviListe.length);
+                System.out.println("RaumCounter: " + raumCounter);
+                NaviInitialisieren();
+                int a = rnd.nextInt(naviListe.size());
+                int b = rnd.nextInt(naviListe.size());
+                int c = rnd.nextInt(naviListe.size());
+                int d = rnd.nextInt(naviListe.size());
 
                 switch (x.getName()) {
-                    case "Kampf":
-//                        NavigationKampf();
-                        System.out.println("Kampf");
-                        break;
-                    case "Lager":
-//                        NavigationLager();
-                        System.out.println("Lager");
-                        break;
-                    case "Event":
-                        System.out.println("Event");
-                        break;
-                    case "Boss":
-                        System.out.println("Boss");
-                        break;
+                    case "Kampf" ->
+                        NavigationKampf();
+                    case "Lager" ->
+                        NavigationLager();
+                    case "Event" ->
+                        NavigationEvent();
+                    case "Schatz" ->
+                        NavigationSchatz();
+                    case "Laden" ->
+                        NavigationLaden();
+                    case "Boss" ->
+                        NavigationBoss();
                 }
-
-                navi1Btn.setIcon(y.getBild());
                 navi1Btn.removeActionListener(Navi1);
-                Navi1Button(y,naviListe[a],naviListe[b]);
+                navi1Btn.setIcon(y.getBild());
                 navi2Btn.removeActionListener(Navi2);
-                Navi2Button(z,naviListe[c],naviListe[d]);
-                navi3Btn.setIcon(new ImageIcon("res/Icons/" + naviListe[a].getName() + ".png"));
-                navi4Btn.setIcon(new ImageIcon("res/Icons/" + naviListe[b].getName() + ".png"));
-                navi5Btn.setIcon(new ImageIcon("res/Icons/" + naviListe[c].getName() + ".png"));
-                navi6Btn.setIcon(new ImageIcon("res/Icons/" + naviListe[d].getName() + ".png"));
+                navi2Btn.setIcon(z.getBild());
+                navi3Btn.setIcon(naviListe.get(a).getBild());
+                navi4Btn.setIcon(naviListe.get(b).getBild());
+                navi5Btn.setIcon(naviListe.get(c).getBild());
+                navi6Btn.setIcon(naviListe.get(d).getBild());
+                Navi1Button(y, naviListe.get(a), naviListe.get(b));
+                Navi2Button(z, naviListe.get(c), naviListe.get(d));
             }
         };
         navi1Btn.addActionListener(Navi1);
     }
     public static void Navi2Button(Navigation x, Navigation y, Navigation z) {
-        Navi1 = new ActionListener() {
+        navi2Btn.setIcon(x.getBild());
+        Navi2 = new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e1) {
+            public void actionPerformed(ActionEvent e) {
                 Random rnd = new Random();
                 raumCounter++;
-                int a = rnd.nextInt(naviListe.length);
-                int b = rnd.nextInt(naviListe.length);
-                int c = rnd.nextInt(naviListe.length);
-                int d = rnd.nextInt(naviListe.length);
+                System.out.println("RaumCounter: " + raumCounter);
+                NaviInitialisieren();
+                int a = rnd.nextInt(naviListe.size());
+                int b = rnd.nextInt(naviListe.size());
+                int c = rnd.nextInt(naviListe.size());
+                int d = rnd.nextInt(naviListe.size());
 
                 switch (x.getName()) {
-                    case "Kampf":
-//                        NavigationKampf();
-                        System.out.println("Kampf");
-                        break;
-                    case "Lager":
-//                        NavigationLager();
-                        System.out.println("Lager");
-                        break;
-                    case "Event":
-                        System.out.println("Event");
-                        break;
-                    case "Boss":
-                        System.out.println("Boss");
-                        break;
+                    case "Kampf" ->
+                        NavigationKampf();
+                    case "Lager" ->
+                        NavigationLager();
+                    case "Event" ->
+                        NavigationEvent();
+                    case "Schatz" ->
+                        NavigationSchatz();
+                    case "Laden" ->
+                        NavigationLaden();
+                    case "Boss" ->
+                        NavigationBoss();
                 }
-
-                navi1Btn.setIcon(y.getBild());
-                navi1Btn.removeActionListener(Navi1);
-                Navi1Button(z,naviListe[c],naviListe[d]);
                 navi2Btn.removeActionListener(Navi2);
-                Navi2Button(y,);
-                navi3Btn.setIcon(new ImageIcon("res/Icons/" + naviListe[a].getName() + ".png"));
-                navi4Btn.setIcon(new ImageIcon("res/Icons/" + naviListe[b].getName() + ".png"));
-                navi5Btn.setIcon(new ImageIcon("res/Icons/" + naviListe[c].getName() + ".png"));
-                navi6Btn.setIcon(new ImageIcon("res/Icons/" + naviListe[d].getName() + ".png"));
+                navi2Btn.setIcon(z.getBild());
+                navi1Btn.removeActionListener(Navi1);
+                navi1Btn.setIcon(y.getBild());
+                navi3Btn.setIcon(naviListe.get(a).getBild());
+                navi4Btn.setIcon(naviListe.get(b).getBild());
+                navi5Btn.setIcon(naviListe.get(c).getBild());
+                navi6Btn.setIcon(naviListe.get(d).getBild());
+                Navi2Button(z, naviListe.get(c), naviListe.get(d));
+                Navi1Button(y, naviListe.get(a), naviListe.get(b));
             }
         };
-        navi2Btn.setIcon(x.getBild());
+        navi2Btn.addActionListener(Navi2);
     }
     public static void Navi3Button(Navigation x) {
-
+        navi3Btn.setIcon(x.getBild());
     }
     public static void Navi4Button(Navigation x) {
+        navi4Btn.setIcon(x.getBild());
     }
     public static void Navi5Button(Navigation x) {
+        navi5Btn.setIcon(x.getBild());
     }
     public static void Navi6Button(Navigation x) {
+        navi6Btn.setIcon(x.getBild());
     }
     public static void NavigationKampf() {
         Random rnd = new Random();
-        int i = rnd.nextInt(2);
-        Encounter(gegnerListeT1[i],1);
-        textLog.append("\nEin " + gegner.getName() + " ist erschienen!");
+        int i = rnd.nextInt(gegnerListeT1.size());
+        Encounter(gegnerListeT1.get(i),1);
+        textLog.append("\n " + gegner.getName() + " ist erschienen!");
     }
     public static void NavigationLager() {
         lagerPanel.setVisible(true);
@@ -429,13 +526,26 @@ public class Spiel {
         spieler.setHp(spieler.getMaxHp());
         spieler.setSp(spieler.getMaxSp());
         UpdateSpieler();
-        textLog.append("\n" + spieler.getName() + " erholt sich am Lagerfeuer.");
-        Timer timer = new Timer(4000, e -> {
+        textLog.append("\n " + spieler.getName() + " erholt sich am Lagerfeuer.");
+        Timer timer = new Timer(2000, e -> {
             lagerPanel.setVisible(false);
             naviPanel.setVisible(true);
+            textLog.append("\n HP und SP wurden aufgefüllt!");
         });
         timer.setRepeats(false);
         timer.start();
+    }
+    public static void NavigationEvent() {
+    }
+    public static void NavigationSchatz() {
+    }
+    public static void NavigationLaden() {
+    }
+    public static void NavigationBoss() {
+        Random rnd = new Random();
+        int i = rnd.nextInt(bossListe.size());
+        Encounter(bossListe.get(i),1);
+        textLog.append("\n " + gegner.getName() + " ist erschienen!");
     }
     //endregion
     public static void setSkills() {
@@ -458,26 +568,30 @@ public class Spiel {
     }
     public static void setNavi() {
         Random rnd = new Random();
-        int a = rnd.nextInt(naviListe.length);
-        int b = rnd.nextInt(naviListe.length);
-        int c = rnd.nextInt(naviListe.length);
-        int d = rnd.nextInt(naviListe.length);
-        int e = rnd.nextInt(naviListe.length);
-        int f = rnd.nextInt(naviListe.length);
+        int a = rnd.nextInt(naviListe.size());
+        int b = rnd.nextInt(naviListe.size());
+        int c = rnd.nextInt(naviListe.size());
+        int d = rnd.nextInt(naviListe.size());
+        int e = rnd.nextInt(naviListe.size());
+        int f = rnd.nextInt(naviListe.size());
 
-        Navi1Button(naviListe[a],naviListe[c],naviListe[d]);
-        Navi2Button(naviListe[b],naviListe[e],naviListe[f]);
-        Navi3Button(naviListe[c]);
-        Navi4Button(naviListe[d]);
-        Navi5Button(naviListe[e]);
-        Navi6Button(naviListe[f]);
+        Navi1Button(naviListe.get(a), naviListe.get(c), naviListe.get(d));
+        Navi2Button(naviListe.get(b), naviListe.get(e), naviListe.get(f));
+        Navi3Button(naviListe.get(c));
+        Navi4Button(naviListe.get(d));
+        Navi5Button(naviListe.get(e));
+        Navi6Button(naviListe.get(f));
 
-        navi1Btn.setIcon(naviListe[a].getBild());
-        navi2Btn.setIcon(naviListe[b].getBild());
-        navi3Btn.setIcon(naviListe[c].getBild());
-        navi4Btn.setIcon(naviListe[d].getBild());
-        navi5Btn.setIcon(naviListe[e].getBild());
-        navi6Btn.setIcon(naviListe[f].getBild());
+        navi3Btn.setEnabled(false);
+        navi4Btn.setEnabled(false);
+        navi5Btn.setEnabled(false);
+        navi6Btn.setEnabled(false);
+
+//        navi2Btn.setIcon(naviListe[b].getBild());
+//        navi3Btn.setIcon(naviListe[c].getBild());
+//        navi4Btn.setIcon(naviListe[d].getBild());
+//        navi5Btn.setIcon(naviListe[e].getBild());
+//        navi6Btn.setIcon(naviListe[f].getBild());
     }
     //region Skillpoints
     public static void SkillPunkte() {
@@ -488,7 +602,6 @@ public class Spiel {
         wisUpBtn.setVisible(true);
         statUpLbl.setVisible(true);
         statUpLbl.setText("(" + skillpunkte + ") Skillpunkte verfügbar!");
-        System.out.println(skillpunkte);
     }
     public static void setStatUpBtn() {
         strUpBtn.addActionListener(e -> {
@@ -509,7 +622,6 @@ public class Spiel {
                 statUpLbl.setVisible(false);
             }
             UpdateSpieler();
-            System.out.println(skillpunkte);
         });
         dexUpBtn.addActionListener(e -> {
             skillpunkte -= 1;
@@ -529,7 +641,6 @@ public class Spiel {
                 statUpLbl.setVisible(false);
             }
             UpdateSpieler();
-            System.out.println(skillpunkte);
         });
         knoUpBtn.addActionListener(e -> {
             skillpunkte -= 1;
@@ -549,7 +660,6 @@ public class Spiel {
                 statUpLbl.setVisible(false);
             }
             UpdateSpieler();
-            System.out.println(skillpunkte);
         });
         wisUpBtn.addActionListener(e -> {
             skillpunkte -= 1;
@@ -569,13 +679,13 @@ public class Spiel {
                 statUpLbl.setVisible(false);
             }
             UpdateSpieler();
-            System.out.println(skillpunkte);
         });
     }
     //endregion
     //region skill button
     public static void Skill1Aenderung(Skills x) {
         skillBtn1.setIcon(x.getBild());
+        skill1Kosten = x.getHpKosten();
         skillBtn1.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -594,7 +704,7 @@ public class Spiel {
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                SkillLblInfoUpdate(x.getName(), x.getKraft(), x.getGenauigkeit(), x.getMod());
+                SkillLblInfoUpdate(x.getName(), x.getKraft(), x.getGenauigkeit(), x.getMod(),x.getHpKosten(), x.getSpKosten());
                 skillInfoPanel.setVisible(true);
             }
 
@@ -611,10 +721,13 @@ public class Spiel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Kampf(x.getMod(),x.getKraft(),x.getGenauigkeit());
+                spieler.setHp(spieler.getHp() - x.getHpKosten());
+                spieler.setSp(spieler.getSp() - x.getSpKosten());
+                UpdateSpieler();
             }
         };
         skillBtn1.addActionListener(Skill1);
-
+        skill1 = x;
     }
     public static void Skill2Aenderung(Skills x) {
         SpielPanel.skillBtn2.setIcon(x.getBild());
@@ -636,7 +749,7 @@ public class Spiel {
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                SkillLblInfoUpdate(x.getName(), x.getKraft(), x.getGenauigkeit(), x.getMod());
+                SkillLblInfoUpdate(x.getName(), x.getKraft(), x.getGenauigkeit(), x.getMod(),x.getHpKosten(), x.getSpKosten());
                 skillInfoPanel.setVisible(true);
             }
 
@@ -652,9 +765,13 @@ public class Spiel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Kampf(x.getMod(),x.getKraft(),x.getGenauigkeit());
+                spieler.setHp(spieler.getHp() - x.getHpKosten());
+                spieler.setSp(spieler.getSp() - x.getSpKosten());
+                UpdateSpieler();
             }
         };
         skillBtn2.addActionListener(Skill2);
+        skill2 = x;
     }
     public static void Skill3Aenderung(Skills x) {
         SpielPanel.skillBtn3.setIcon(x.getBild());
@@ -676,7 +793,7 @@ public class Spiel {
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                SkillLblInfoUpdate(x.getName(), x.getKraft(), x.getGenauigkeit(), x.getMod());
+                SkillLblInfoUpdate(x.getName(), x.getKraft(), x.getGenauigkeit(), x.getMod(),x.getHpKosten(), x.getSpKosten());
                 skillInfoPanel.setVisible(true);
             }
 
@@ -692,9 +809,13 @@ public class Spiel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Kampf(x.getMod(),x.getKraft(),x.getGenauigkeit());
+                spieler.setHp(spieler.getHp() - x.getHpKosten());
+                spieler.setSp(spieler.getSp() - x.getSpKosten());
+                UpdateSpieler();
             }
         };
         skillBtn3.addActionListener(Skill3);
+        skill3 = x;
 
     }
     public static void Skill4Aenderung(Skills x) {
@@ -717,7 +838,7 @@ public class Spiel {
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                SkillLblInfoUpdate(x.getName(), x.getKraft(), x.getGenauigkeit(), x.getMod());
+                SkillLblInfoUpdate(x.getName(), x.getKraft(), x.getGenauigkeit(), x.getMod(),x.getHpKosten(), x.getSpKosten());
                 skillInfoPanel.setVisible(true);
             }
 
@@ -733,9 +854,13 @@ public class Spiel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Kampf(x.getMod(),x.getKraft(),x.getGenauigkeit());
+                spieler.setHp(spieler.getHp() - x.getHpKosten());
+                spieler.setSp(spieler.getSp() - x.getSpKosten());
+                UpdateSpieler();
             }
         };
         skillBtn4.addActionListener(Skill4);
+        skill4 = x;
 
     }
     public static void Skill5Aenderung(Skills x) {
@@ -758,7 +883,7 @@ public class Spiel {
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                SkillLblInfoUpdate(x.getName(), x.getKraft(), x.getGenauigkeit(), x.getMod());
+                SkillLblInfoUpdate(x.getName(), x.getKraft(), x.getGenauigkeit(), x.getMod(),x.getHpKosten(), x.getSpKosten());
                 skillInfoPanel.setVisible(true);
             }
 
@@ -774,22 +899,39 @@ public class Spiel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Kampf(x.getMod(),x.getKraft(),x.getGenauigkeit());
+                spieler.setHp(spieler.getHp() - x.getHpKosten());
+                spieler.setSp(spieler.getSp() - x.getSpKosten());
+                UpdateSpieler();
             }
         };
         skillBtn5.addActionListener(Skill5);
+        skill5 = x;
     }
-    public static void SkillLblInfoUpdate(String name, int kraft, int genauigkeit, String mod) {
+    public static void SkillLblInfoUpdate(String name, int kraft, int genauigkeit, String mod, int hpKosten, int spKosten) {
         skillLblName.setText(name);
         skillLblGenauigkeit.setText(genauigkeit + "%");
 
         switch (mod) {
-            case "str":
-                skillLblKraft.setText("<html>Kraft: <font color='#ff0000'>" + kraft);
-                break;
-            case "dex":
-                skillLblKraft.setText("<html>Kraft: <font color='#3cb371'>" + kraft);
-                break;
+            case "str" -> skillLblKraft.setText("<html>Kraft: <font color='#ff0000'>" + kraft);
+            case "dex" -> skillLblKraft.setText("<html>Kraft: <font color='#3cb371'>" + kraft);
+            case "kno" -> skillLblKraft.setText("<html>Kraft: <font color='#94d0ff'>" + kraft);
+            case "wis" -> skillLblKraft.setText("<html>Kraft: <font color='#ffe400'>" + kraft);
         }
+
+        //<html><font color='#C70039'> HP
+        //<html><font color='#234ba1'> SP
+
+        if (hpKosten > 0) {
+            skillLblKosten.setText("<html><font color='#C70039'>" + hpKosten);
+        }
+        if (spKosten > 0) {
+            skillLblKosten.setText("<html><font color='#234ba1'>" + spKosten);
+        }
+        if ((spKosten > 0) & (hpKosten > 0)) {
+            skillLblKosten.setText("<html><font color='#C70039'>" + hpKosten + "</font>/" + "<font color='#234ba1'>" + spKosten);
+        }
+
+
         
     }
     //endregion

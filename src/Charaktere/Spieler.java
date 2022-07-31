@@ -42,8 +42,6 @@ public class Spieler extends Charaktere {
         double range2 =  angriffsWert+(angriffsWert/(10));
         Random rng = new Random();
         angriffsWert = rng.nextDouble(range1,range2);
-        System.out.println("spielerAtk1 " + range1);
-        System.out.println("spielerAtk2 " + range2);
         return (int) angriffsWert;
     }
     public int verteidigung(String mod) {
@@ -67,8 +65,6 @@ public class Spieler extends Charaktere {
         double range2 =  verteidigung+(verteidigung/(10));
         Random rng = new Random();
         verteidigung = rng.nextDouble(range1,range2);
-        System.out.println("spielerdef1 " + range1);
-        System.out.println("spielerdef2 " + range2);
         return (int) verteidigung;
     }
 }

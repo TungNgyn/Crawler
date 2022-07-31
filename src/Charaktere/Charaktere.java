@@ -5,12 +5,40 @@ import java.util.Random;
 
 public abstract class Charaktere {
     String name, mod;
-    int hp, maxHp, sp, maxSp, exp, lvl, atk, def, str, dex, kno, wis;
+    int hp, maxHp, sp, maxSp, exp, lvl, atk, def, str, dex, kno, wis, gold;
     ImageIcon bild;
 
     public Charaktere(){
 
     };
+
+    public int getGold() {
+        return gold;
+    }
+
+    public void setGold(int gold) {
+        this.gold = gold;
+    }
+
+    public Charaktere(String name, int maxHp, int maxSp, String mod, int exp, int lvl, int atk, int def,
+                      int str, int dex, int kno, int wis, int gold, ImageIcon bild) {
+        this.name = name;
+        this.maxHp = maxHp;
+        this.hp = maxHp;
+        this.maxSp = maxSp;
+        this.sp = maxSp;
+        this.mod = mod;
+        this.exp = exp;
+        this.lvl = lvl;
+        this.atk = atk;
+        this.def = def;
+        this.str = str;
+        this.dex = dex;
+        this.kno = kno;
+        this.wis = wis;
+        this.gold = gold;
+        this.bild = bild;
+    }
 
     public ImageIcon getBild() {
         return bild;
@@ -42,25 +70,6 @@ public abstract class Charaktere {
 
     public void setMod(String mod) {
         this.mod = mod;
-    }
-
-    public Charaktere(String name, int maxHp, int maxSp, String mod, int exp, int lvl, int atk, int def,
-                      int str, int dex, int kno, int wis, ImageIcon bild) {
-        this.name = name;
-        this.maxHp = maxHp;
-        this.hp = maxHp;
-        this.maxSp = maxSp;
-        this.sp = maxSp;
-        this.mod = mod;
-        this.exp = exp;
-        this.lvl = lvl;
-        this.atk = atk;
-        this.def = def;
-        this.str = str;
-        this.dex = dex;
-        this.kno = kno;
-        this.wis = wis;
-        this.bild = bild;
     }
 
     public String getName() {

@@ -15,8 +15,8 @@ public class SpielPanel extends JPanel {
     public static JPanel gamePanel,statPanel,btnPanel,textPanel,skillInfoPanel,gegnerPanel,naviPanel,lagerPanel;
     public static JButton skillBtn1, skillBtn2, skillBtn3, skillBtn4, skillBtn5, strUpBtn, dexUpBtn, knoUpBtn, wisUpBtn,
             navi1Btn,navi2Btn,navi3Btn,navi4Btn,navi5Btn,navi6Btn;
-    public static JLabel skillLblName, skillLblKraft, skillLblGenauigkeit, spielerNameLbl, spielerHp,
-            spielerSp, spielerExp, spielerStr, spielerDex, spielerKno, spielerWis, gegnerBildLbl, gegnerNameLbl,
+    public static JLabel skillLblName, skillLblKraft, skillLblGenauigkeit, spielerNameLbl, spielerHp,skillLblKosten,
+            spielerSp, spielerExp, spielerGold, spielerStr, spielerDex, spielerKno, spielerWis, gegnerBildLbl, gegnerNameLbl,
             spielerAtk, spielerDef,statUpLbl,naviTitelLbl,naviEbeneLbl;
     private static JLabel vorschauklasseLbl,vorschauhpLbl,vorschauspLbl,vorschaustrLbl,vorschaudexLbl,
             vorschauknoLbl,vorschauwisLbl,vorschauatkLbl,vorschaudefLbl;
@@ -65,6 +65,7 @@ public class SpielPanel extends JPanel {
         removeAll();
         repaint();
         Font statFont = new Font("Segoe UI", Font.BOLD, 15);
+        Font textFont = new Font("Segoe UI", Font.BOLD, 12);
 
         SpringLayout layout = new SpringLayout();
         setLayout(layout);
@@ -172,7 +173,7 @@ public class SpielPanel extends JPanel {
         //region statpanel
         statPanel = new JPanel();
         add(statPanel);
-        statPanel.setPreferredSize(new Dimension(250,420));
+        statPanel.setPreferredSize(new Dimension(250,430));
         statPanel.setBorder(BorderFactory.createLineBorder(Color.WHITE,2,true));
         statPanel.setBackground(Color.BLACK);
         SpringLayout layoutStat = new SpringLayout();
@@ -193,6 +194,8 @@ public class SpielPanel extends JPanel {
         spielerSp = new JLabel( spieler.getSp() + "/" + spieler.getMaxSp());
         JLabel spielerExpLbl = new JLabel("EP");
         spielerExp = new JLabel("" + spieler.getExp());
+        JLabel spielerGoldLbl = new JLabel("Gold");
+        spielerGold = new JLabel("" + spieler.getGold());
 
 
         spielerNameLbl.setFont(statFont);
@@ -209,6 +212,10 @@ public class SpielPanel extends JPanel {
         spielerExpLbl.setForeground(Color.WHITE);
         spielerExp.setFont(statFont);
         spielerExp.setForeground(Color.WHITE);
+        spielerGoldLbl.setFont(statFont);
+        spielerGoldLbl.setForeground(Color.WHITE);
+        spielerGold.setFont(statFont);
+        spielerGold.setForeground(Color.WHITE);
 
         spielerHpBar.setStringPainted(true);
         spielerHpBar.setForeground(Color.decode("#C70039"));
@@ -225,9 +232,11 @@ public class SpielPanel extends JPanel {
         layoutStat.putConstraint(SpringLayout.WEST, spielerHpLbl,30,SpringLayout.WEST,statPanel);
         layoutStat.putConstraint(SpringLayout.WEST, spielerSpLbl,30,SpringLayout.WEST,statPanel);
         layoutStat.putConstraint(SpringLayout.WEST, spielerExpLbl,30,SpringLayout.WEST,statPanel);
+        layoutStat.putConstraint(SpringLayout.WEST, spielerGoldLbl,30,SpringLayout.WEST,statPanel);
         layoutStat.putConstraint(SpringLayout.EAST,spielerHp,-30,SpringLayout.EAST,statPanel);
         layoutStat.putConstraint(SpringLayout.EAST,spielerSp,-30,SpringLayout.EAST,statPanel);
         layoutStat.putConstraint(SpringLayout.EAST,spielerExp,-30,SpringLayout.EAST,statPanel);
+        layoutStat.putConstraint(SpringLayout.EAST,spielerGold,-30,SpringLayout.EAST,statPanel);
 
         layoutStat.putConstraint(SpringLayout.NORTH, spielerHpLbl,10,SpringLayout.SOUTH,spielerNameLbl);
         layoutStat.putConstraint(SpringLayout.NORTH,spielerHp,10,SpringLayout.SOUTH,spielerNameLbl);
@@ -238,6 +247,8 @@ public class SpielPanel extends JPanel {
         layoutStat.putConstraint(SpringLayout.NORTH, spielerExpLbl,10,SpringLayout.SOUTH,spielerSpBar);
         layoutStat.putConstraint(SpringLayout.NORTH,spielerExp,10,SpringLayout.SOUTH,spielerSpBar);
         layoutStat.putConstraint(SpringLayout.NORTH,spielerExpBar,10,SpringLayout.SOUTH, spielerExpLbl);
+        layoutStat.putConstraint(SpringLayout.NORTH, spielerGoldLbl, 10, SpringLayout.SOUTH, spielerExpBar);
+        layoutStat.putConstraint(SpringLayout.NORTH, spielerGold, 10, SpringLayout.SOUTH, spielerExpBar);
 
 
         statPanel.add(spielerNameLbl);
@@ -250,6 +261,8 @@ public class SpielPanel extends JPanel {
         statPanel.add(spielerExpLbl);
         statPanel.add(spielerExp);
         statPanel.add(spielerExpBar);
+        statPanel.add(spielerGoldLbl);
+        statPanel.add(spielerGold);
         //endregion
         //region botside
         JLabel spielerAtkLbl = new JLabel("Angriff");
@@ -307,30 +320,30 @@ public class SpielPanel extends JPanel {
         layoutStat.putConstraint(SpringLayout.EAST,spielerDex,-30,SpringLayout.EAST,statPanel);
         layoutStat.putConstraint(SpringLayout.EAST,spielerKno,-30,SpringLayout.EAST,statPanel);
         layoutStat.putConstraint(SpringLayout.EAST,spielerWis,-30,SpringLayout.EAST,statPanel);
-        layoutStat.putConstraint(SpringLayout.EAST,strUpBtn,-50,SpringLayout.EAST,statPanel);
-        layoutStat.putConstraint(SpringLayout.EAST,dexUpBtn,-50,SpringLayout.EAST,statPanel);
-        layoutStat.putConstraint(SpringLayout.EAST,knoUpBtn,-50,SpringLayout.EAST,statPanel);
-        layoutStat.putConstraint(SpringLayout.EAST,wisUpBtn,-50,SpringLayout.EAST,statPanel);
+        layoutStat.putConstraint(SpringLayout.EAST,strUpBtn,-70,SpringLayout.EAST,statPanel);
+        layoutStat.putConstraint(SpringLayout.EAST,dexUpBtn,-70,SpringLayout.EAST,statPanel);
+        layoutStat.putConstraint(SpringLayout.EAST,knoUpBtn,-70,SpringLayout.EAST,statPanel);
+        layoutStat.putConstraint(SpringLayout.EAST,wisUpBtn,-70,SpringLayout.EAST,statPanel);
         layoutStat.putConstraint(SpringLayout.HORIZONTAL_CENTER,statUpLbl,0,SpringLayout.HORIZONTAL_CENTER,statPanel);
 
-        layoutStat.putConstraint(SpringLayout.NORTH, spielerAtkLbl,20,SpringLayout.SOUTH,spielerExpBar);
+        layoutStat.putConstraint(SpringLayout.NORTH, spielerAtkLbl,15,SpringLayout.SOUTH, spielerGoldLbl);
         layoutStat.putConstraint(SpringLayout.NORTH, spielerDefLbl,10,SpringLayout.SOUTH, spielerAtkLbl);
         layoutStat.putConstraint(SpringLayout.NORTH, spielerStrLbl,10,SpringLayout.SOUTH, spielerDefLbl);
         layoutStat.putConstraint(SpringLayout.NORTH, spielerDexLbl,10,SpringLayout.SOUTH, spielerStrLbl);
         layoutStat.putConstraint(SpringLayout.NORTH, spielerKnoLbl,10,SpringLayout.SOUTH, spielerDexLbl);
         layoutStat.putConstraint(SpringLayout.NORTH, spielerWisLbl,10,SpringLayout.SOUTH, spielerKnoLbl);
 
-        layoutStat.putConstraint(SpringLayout.NORTH,spielerAtk,20,SpringLayout.SOUTH,spielerExpBar);
+        layoutStat.putConstraint(SpringLayout.NORTH,spielerAtk,15,SpringLayout.SOUTH,spielerGoldLbl);
         layoutStat.putConstraint(SpringLayout.NORTH,spielerDef,10,SpringLayout.SOUTH,spielerAtk);
-        layoutStat.putConstraint(SpringLayout.NORTH,strUpBtn,10,SpringLayout.SOUTH,spielerDef);
-        layoutStat.putConstraint(SpringLayout.NORTH,dexUpBtn,10,SpringLayout.SOUTH,spielerStr);
-        layoutStat.putConstraint(SpringLayout.NORTH,knoUpBtn,10,SpringLayout.SOUTH,spielerDex);
-        layoutStat.putConstraint(SpringLayout.NORTH,wisUpBtn,10,SpringLayout.SOUTH,spielerKno);
+        layoutStat.putConstraint(SpringLayout.NORTH,strUpBtn,6,SpringLayout.SOUTH,spielerDef);
+        layoutStat.putConstraint(SpringLayout.NORTH,dexUpBtn,6,SpringLayout.SOUTH,spielerStr);
+        layoutStat.putConstraint(SpringLayout.NORTH,knoUpBtn,6,SpringLayout.SOUTH,spielerDex);
+        layoutStat.putConstraint(SpringLayout.NORTH,wisUpBtn,6,SpringLayout.SOUTH,spielerKno);
         layoutStat.putConstraint(SpringLayout.NORTH,spielerStr,10,SpringLayout.SOUTH,spielerDef);
         layoutStat.putConstraint(SpringLayout.NORTH,spielerDex,10,SpringLayout.SOUTH,spielerStr);
         layoutStat.putConstraint(SpringLayout.NORTH,spielerKno,10,SpringLayout.SOUTH,spielerDex);
         layoutStat.putConstraint(SpringLayout.NORTH,spielerWis,10,SpringLayout.SOUTH,spielerKno);
-        layoutStat.putConstraint(SpringLayout.SOUTH,statUpLbl,-10,SpringLayout.SOUTH,statPanel);
+        layoutStat.putConstraint(SpringLayout.NORTH,statUpLbl,5,SpringLayout.SOUTH,spielerWis);
 
         strUpBtn.setVisible(false);
         dexUpBtn.setVisible(false);
@@ -371,7 +384,7 @@ public class SpielPanel extends JPanel {
         textLog.setLineWrap(true);
         textLog.setEditable(false);
         textLog.setBackground(Color.BLACK);
-        textLog.setFont(statFont);
+        textLog.setFont(textFont);
         textLog.setForeground(Color.WHITE);
 
         JScrollPane textLogScroll = new JScrollPane(textLog);
@@ -435,10 +448,14 @@ public class SpielPanel extends JPanel {
         skillLblName = new JLabel("");
         skillLblKraft = new JLabel("");
         skillLblGenauigkeit = new JLabel("");
+        skillLblKosten = new JLabel("");
 
         layout2.putConstraint(SpringLayout.NORTH, skillLblName,5,SpringLayout.NORTH, skillInfoPanel);
-        layout2.putConstraint(SpringLayout.NORTH, skillLblGenauigkeit,5,SpringLayout.NORTH, skillInfoPanel);
+        layout2.putConstraint(SpringLayout.NORTH, skillLblKosten,5,SpringLayout.NORTH, skillInfoPanel);
         layout2.putConstraint(SpringLayout.SOUTH, skillLblKraft,-5,SpringLayout.SOUTH, skillInfoPanel);
+        layout2.putConstraint(SpringLayout.SOUTH, skillLblGenauigkeit, -5, SpringLayout.SOUTH,skillInfoPanel);
+
+        layout2.putConstraint(SpringLayout.EAST, skillLblKosten, -5, SpringLayout.EAST, skillInfoPanel);
         layout2.putConstraint(SpringLayout.EAST, skillLblGenauigkeit, -5, SpringLayout.EAST, skillInfoPanel);
         layout2.putConstraint(SpringLayout.WEST, skillLblName, 5, SpringLayout.WEST, skillInfoPanel);
         layout2.putConstraint(SpringLayout.WEST, skillLblKraft, 5, SpringLayout.WEST, skillInfoPanel);
@@ -446,12 +463,15 @@ public class SpielPanel extends JPanel {
         skillLblName.setForeground(Color.WHITE);
         skillLblKraft.setForeground(Color.WHITE);
         skillLblGenauigkeit.setForeground(Color.WHITE);
+        skillLblKosten.setForeground(Color.WHITE);
+        skillLblKosten.setFont(skillLblFont);
         skillLblName.setFont(skillLblFont);
         skillLblKraft.setFont(skillLblFont);
         skillLblGenauigkeit.setFont(skillLblFont);
         skillInfoPanel.add(skillLblName);
         skillInfoPanel.add(skillLblKraft);
         skillInfoPanel.add(skillLblGenauigkeit);
+        skillInfoPanel.add(skillLblKosten);
 
         skillInfoPanel.setVisible(false);
         add(skillInfoPanel);
