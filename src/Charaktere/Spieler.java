@@ -22,22 +22,14 @@ public class Spieler extends Charaktere {
 
     @Override
     public int angriff(String mod, int kraft) {
-        double angriffsWert = 0;
+        double angriffsWert = switch (mod) {
+            case "str" -> (atk + str + (str * ((double) kraft / 100)));
+            case "dex" -> (atk + dex + (dex * ((double) kraft / 100)));
+            case "kno" -> (atk + kno + (kno * ((double) kraft / 100)));
+            case "wis" -> (atk + wis + (wis * ((double) kraft / 100)));
+            default -> 0;
+        };
 
-        switch (mod) {
-            case "str":
-                angriffsWert = (atk + str * ((double) kraft/100));
-                break;
-            case "dex":
-                angriffsWert = (atk + dex * ((double) kraft/100));
-                break;
-            case "kno":
-                angriffsWert = (atk + kno * ((double) kraft/100));
-                break;
-            case "wis":
-                angriffsWert = (atk + wis * ((double) kraft/100));
-                break;
-        }
         double range1 =  angriffsWert-(angriffsWert/(10));
         double range2 =  angriffsWert+(angriffsWert/(10));
         Random rng = new Random();
@@ -45,22 +37,14 @@ public class Spieler extends Charaktere {
         return (int) angriffsWert;
     }
     public int verteidigung(String mod) {
-        double verteidigung = 0;
+        double verteidigung = switch (mod) {
+            case "str" -> str*0.5 + def;
+            case "dex" -> dex*0.5 + def;
+            case "kno" -> kno*0.5 + def;
+            case "wis" -> wis*0.5 + def;
+            default -> 0;
+        };
 
-        switch (mod) {
-            case "str":
-                verteidigung = str + def;
-                break;
-            case "dex":
-                verteidigung = dex + def;
-                break;
-            case "kno":
-                verteidigung = kno + def;
-                break;
-            case "wis":
-                verteidigung = wis + def;
-                break;
-        }
         double range1 =  verteidigung-(verteidigung/(10));
         double range2 =  verteidigung+(verteidigung/(10));
         Random rng = new Random();

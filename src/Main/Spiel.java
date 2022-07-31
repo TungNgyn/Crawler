@@ -31,11 +31,13 @@ public class Spiel {
     static ActionListener Skill1,Skill2,Skill3,Skill4,Skill5,Navi1,Navi2,Navi3,Navi4,Navi5,Navi6;
 
     static ArrayList<Gegner> gegnerListeT1 = new ArrayList<>();
+    static ArrayList<Gegner> gegnerListeT2 = new ArrayList<>();
     static ArrayList<Navigation> naviListe = new ArrayList<>();
     static ArrayList<Gegner> bossListe = new ArrayList<>();
     static int expNeed = 50;
     static int skillpunkte = 0;
     static int raumCounter = 0;
+    static int ebeneCounter = 1;
     static int kampfRunde = 0;
     static int skill1Kosten, skill2Kosten, skill3Kosten, skill4Kosten, skill5Kosten;
 
@@ -50,9 +52,20 @@ public class Spiel {
         NaviInitialisieren();
     }
     public static void GegnerInitialisieren() {
-        gegnerListeT1.add(gegnerFledermaus);
-        gegnerListeT1.add(gegnerSchneemann);
-        bossListe.add(gegnerBehemoth);
+        gegnerListeT1.add(fledermaus);
+        gegnerListeT1.add(schneemann);
+        gegnerListeT1.add(hornisse);
+        gegnerListeT1.add(ratte);
+        gegnerListeT1.add(schlange);
+        gegnerListeT1.add(skorpion);
+        gegnerListeT1.add(zombie);
+        gegnerListeT2.add(minotaurus);
+        gegnerListeT2.add(oger);
+        gegnerListeT2.add(werwolf);
+        bossListe.add(behemoth);
+        bossListe.add(daemon);
+        bossListe.add(drache);
+        bossListe.add(dunklerLord);
     }
     public static void NaviInitialisieren() {
         naviListe.removeAll(naviListe);
@@ -132,6 +145,8 @@ public class Spiel {
         JButton spUpBtn = new JButton("+5 SP");
         JButton encBtn = new JButton("Random Encounter");
         JButton lvlUpBtn = new JButton("Level up");
+        JButton t2EncBtn = new JButton("T2 Encounter");
+        JButton bossEncBtn = new JButton("Boss Encounter");
 
 
         hpDownBtn.addActionListener(e -> {
@@ -151,13 +166,19 @@ public class Spiel {
             UpdateSpieler();
         });
         encBtn.addActionListener(e -> {
-            Random rnd = new Random();
-            int i = rnd.nextInt(2);
-            Encounter(gegnerListeT1.get(i),1);
+            NavigationKampf();
         });
         lvlUpBtn.addActionListener(e -> {
             spieler.setExp(expNeed);
             CheckLevelUp();
+        });
+        t2EncBtn.addActionListener(e -> {
+            Random rnd = new Random();
+            int i = rnd.nextInt(gegnerListeT2.size());
+            Encounter(gegnerListeT2.get(i),ebeneCounter);
+        });
+        bossEncBtn.addActionListener(e -> {
+            NavigationBoss();
         });
 
 
@@ -167,6 +188,8 @@ public class Spiel {
         adminPanel.add(spUpBtn);
         adminPanel.add(encBtn);
         adminPanel.add(lvlUpBtn);
+        adminPanel.add(t2EncBtn);
+        adminPanel.add(bossEncBtn);
 
         //endregion
 
@@ -200,22 +223,29 @@ public class Spiel {
     }
     //region battle
     public static void Encounter(Gegner x, int lvl) {
+        Random rnd = new Random();
+        double range1, range2;
+
         naviPanel.setVisible(false);
         gegner.setName(x.getName());
         gegner.setMaxHp(x.getMaxHp()+(10*lvl));
         gegner.setHp(gegner.getMaxHp());
         gegner.setMaxSp(x.getMaxSp()+(10*lvl));
         gegner.setSp(gegner.getMaxSp());
-        gegner.setExp(x.getExp());
         gegner.setStr(x.getStr()+(1*lvl));
         gegner.setDex(x.getDex()+(1*lvl));
         gegner.setKno(x.getKno()+(1*lvl));
         gegner.setWis(x.getWis()+(1*lvl));
         gegner.setMod(x.getMod());
-        gegner.setAtk(x.getAtk());
-        gegner.setDef(x.getDef());
-        gegner.setLvl(lvl);
-        gegner.setGold(x.getGold());
+        gegner.setAtk(x.getAtk()+(1*lvl));
+        gegner.setDef(x.getDef()+(1*lvl));
+        gegner.setLvl(ebeneCounter);
+        range1 = x.getGold()/1.5;
+        range2 = x.getGold()*1.5;
+        gegner.setGold(((int) rnd.nextDouble(range1,range2))+(2*lvl));
+        range1 = x.getExp()/1.5;
+        range2 = x.getExp()*1.5;
+        gegner.setExp(((int) rnd.nextDouble(range1,range2))+(2*lvl));
         gegnerBildLbl.setIcon(x.getBild());
         gegnerNameLbl.setText(x.getName() + " Lvl " + lvl);
         gegnerHpBar.setMaximum(gegner.getMaxHp());
@@ -409,11 +439,13 @@ public class Spiel {
         if ((spieler.getExp()) >= (expNeed)) {
             spielerExpBar.setMinimum(expNeed);
             spieler.setLvl(spieler.getLvl()+1);
-            UpdateSpieler();
             expNeed = (int) ((5000/11)*((Math.pow(1.11,(spieler.getLvl())))-1));
             spielerExpBar.setMaximum(expNeed);
             SkillPunkte();
             textLog.append("\n Level Up!");
+            spieler.setHp(spieler.getMaxHp());
+            spieler.setSp(spieler.getMaxSp());
+            UpdateSpieler();
         }
     }
     //endregion
@@ -517,7 +549,7 @@ public class Spiel {
     public static void NavigationKampf() {
         Random rnd = new Random();
         int i = rnd.nextInt(gegnerListeT1.size());
-        Encounter(gegnerListeT1.get(i),1);
+        Encounter(gegnerListeT1.get(i),ebeneCounter);
         textLog.append("\n " + gegner.getName() + " ist erschienen!");
     }
     public static void NavigationLager() {
@@ -544,8 +576,11 @@ public class Spiel {
     public static void NavigationBoss() {
         Random rnd = new Random();
         int i = rnd.nextInt(bossListe.size());
-        Encounter(bossListe.get(i),1);
+        Encounter(bossListe.get(i),ebeneCounter);
         textLog.append("\n " + gegner.getName() + " ist erschienen!");
+        ebeneCounter++;
+        raumCounter = 0;
+        naviEbeneLbl.setText("Ebene " + ebeneCounter);
     }
     //endregion
     public static void setSkills() {
@@ -710,9 +745,10 @@ public class Spiel {
 
             @Override
             public void mouseExited(MouseEvent e) {
-                SpielPanel.skillLblName.setText("");
-                SpielPanel.skillLblKraft.setText("");
-                SpielPanel.skillLblGenauigkeit.setText("");
+                skillLblName.setText("");
+                skillLblKraft.setText("");
+                skillLblGenauigkeit.setText("");
+                skillLblKosten.setText("");
                 skillInfoPanel.setVisible(false);
 
             }
@@ -755,9 +791,10 @@ public class Spiel {
 
             @Override
             public void mouseExited(MouseEvent e) {
-                SpielPanel.skillLblName.setText("");
-                SpielPanel.skillLblKraft.setText("");
-                SpielPanel.skillLblGenauigkeit.setText("");
+                skillLblName.setText("");
+                skillLblKraft.setText("");
+                skillLblGenauigkeit.setText("");
+                skillLblKosten.setText("");
                 skillInfoPanel.setVisible(false);
             }
         });
@@ -799,9 +836,10 @@ public class Spiel {
 
             @Override
             public void mouseExited(MouseEvent e) {
-                SpielPanel.skillLblName.setText("");
-                SpielPanel.skillLblKraft.setText("");
-                SpielPanel.skillLblGenauigkeit.setText("");
+                skillLblName.setText("");
+                skillLblKraft.setText("");
+                skillLblGenauigkeit.setText("");
+                skillLblKosten.setText("");
                 skillInfoPanel.setVisible(false);
             }
         });
@@ -844,9 +882,10 @@ public class Spiel {
 
             @Override
             public void mouseExited(MouseEvent e) {
-                SpielPanel.skillLblName.setText("");
-                SpielPanel.skillLblKraft.setText("");
-                SpielPanel.skillLblGenauigkeit.setText("");
+                skillLblName.setText("");
+                skillLblKraft.setText("");
+                skillLblGenauigkeit.setText("");
+                skillLblKosten.setText("");
                 skillInfoPanel.setVisible(false);
             }
         });
@@ -889,9 +928,10 @@ public class Spiel {
 
             @Override
             public void mouseExited(MouseEvent e) {
-                SpielPanel.skillLblName.setText("");
-                SpielPanel.skillLblKraft.setText("");
-                SpielPanel.skillLblGenauigkeit.setText("");
+                skillLblName.setText("");
+                skillLblKraft.setText("");
+                skillLblGenauigkeit.setText("");
+                skillLblKosten.setText("");
                 skillInfoPanel.setVisible(false);
             }
         });

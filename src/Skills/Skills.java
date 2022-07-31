@@ -75,7 +75,7 @@ public class Skills {
     public static Skills skillStampfer = new Skills("Stampfer", "str", 60, 150,
             4,0,1,new ImageIcon("res/Skills/Ritter/active4.png"));
     public static Skills skillBrutalerSchlag = new Skills("Brutaler Schlag", "str", 150,60,
-            15,0,1, new ImageIcon("res/Skills/Ritter/active5.png"));
+            10,10,1, new ImageIcon("res/Skills/Ritter/active5.png"));
 
 
     //dex <html><font color='#3cb371'>

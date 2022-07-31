@@ -121,7 +121,7 @@ public class SpielPanel extends JPanel {
         navi5Btn = new JButton();
         navi6Btn = new JButton();
         naviTitelLbl = new JLabel("Labyrinth");
-        naviEbeneLbl = new JLabel("Ebene 1");
+        naviEbeneLbl = new JLabel("Ebene " + ebeneCounter);
 
         naviTitelLbl.setFont(new Font("Segoe UI", Font.BOLD, 32));
         naviTitelLbl.setForeground(Color.WHITE);
@@ -160,7 +160,6 @@ public class SpielPanel extends JPanel {
         //region lager
         lagerPanel = new JPanel();
         SpringLayout layoutLager = new SpringLayout();
-//        lagerPanel.setLayout(layoutLager);
         lagerPanel.setPreferredSize(new Dimension(490,285));
         lagerPanel.setBackground(Color.BLACK);
 
@@ -703,6 +702,37 @@ public class SpielPanel extends JPanel {
         hintergrundBild = icon.getImage();
         repaint();
         revalidate();
+        JPanel gameOverPanel = new JPanel();
+        gameOverPanel.setPreferredSize(new Dimension(150,100));
+        JLabel gameOverName = new JLabel(spieler.getName());
+        JLabel gameOverLevel = new JLabel("Level " + spieler.getLvl());
+        JLabel gameOverEbene = new JLabel("Ebene " + ebeneCounter);
+
+
+        gameOverName.setFont(new Font("Segoe UI", Font.BOLD,14));
+        gameOverName.setForeground(Color.WHITE);
+        gameOverLevel.setFont(new Font("Segoe UI", Font.BOLD,14));
+        gameOverLevel.setForeground(Color.WHITE);
+        gameOverEbene.setFont(new Font("Segoe UI", Font.BOLD,14));
+        gameOverEbene.setForeground(Color.WHITE);
+
+        gameOverPanel.setBorder(BorderFactory.createLineBorder(Color.WHITE,2,true));
+        gameOverPanel.setBackground(Color.BLACK);
+
+        SpringLayout layoutPanel = new SpringLayout();
+        gameOverPanel.setLayout(layoutPanel);
+
+        layoutPanel.putConstraint(SpringLayout.HORIZONTAL_CENTER,gameOverName,0,SpringLayout.HORIZONTAL_CENTER,gameOverPanel);
+        layoutPanel.putConstraint(SpringLayout.HORIZONTAL_CENTER,gameOverLevel,0,SpringLayout.HORIZONTAL_CENTER,gameOverPanel);
+        layoutPanel.putConstraint(SpringLayout.HORIZONTAL_CENTER,gameOverEbene,0,SpringLayout.HORIZONTAL_CENTER,gameOverPanel);
+
+        layoutPanel.putConstraint(SpringLayout.NORTH,gameOverName,10,SpringLayout.NORTH,gameOverPanel);
+        layoutPanel.putConstraint(SpringLayout.NORTH,gameOverLevel,10,SpringLayout.SOUTH,gameOverName);
+        layoutPanel.putConstraint(SpringLayout.NORTH,gameOverEbene,10,SpringLayout.SOUTH,gameOverLevel);
+
+        gameOverPanel.add(gameOverName);
+        gameOverPanel.add(gameOverLevel);
+        gameOverPanel.add(gameOverEbene);
 
         SpringLayout layout = new SpringLayout();
         setLayout(layout);
@@ -716,14 +746,18 @@ public class SpielPanel extends JPanel {
         gameOverBtn.setForeground(Color.WHITE);
         gameOverBtn.setBackground(Color.BLACK);
         add(gameOverBtn);
+        add(gameOverPanel);
 
         layout.putConstraint(SpringLayout.HORIZONTAL_CENTER,gameOverLbl,0,SpringLayout.HORIZONTAL_CENTER, this);
         layout.putConstraint(SpringLayout.HORIZONTAL_CENTER,gameOverBtn,0,SpringLayout.HORIZONTAL_CENTER, this);
         layout.putConstraint(SpringLayout.VERTICAL_CENTER,gameOverLbl,100,SpringLayout.NORTH, this);
         layout.putConstraint(SpringLayout.VERTICAL_CENTER,gameOverBtn,-80,SpringLayout.SOUTH, this);
+        layout.putConstraint(SpringLayout.HORIZONTAL_CENTER,gameOverPanel,0,SpringLayout.HORIZONTAL_CENTER,this);
+        layout.putConstraint(SpringLayout.VERTICAL_CENTER,gameOverPanel,0,SpringLayout.VERTICAL_CENTER,this);
 
         gameOverBtn.addActionListener(e -> {
             spielFrame.dispose();
+            ebeneCounter = 1;
             new Spiel();
             revalidate();
         });
