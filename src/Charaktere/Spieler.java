@@ -1,5 +1,6 @@
 package Charaktere;
 
+import javax.swing.*;
 import java.util.Random;
 
 public class Spieler extends Charaktere {
@@ -12,6 +13,23 @@ public class Spieler extends Charaktere {
 //                   int str, int dex, int kno, int wis) {
 //        super(name, maxHp, maxSp, exp, lvl, str, dex, kno, wis);
 //    }
+
+    public Spieler(String name, int maxHp, int maxSp, String mod, int exp, int lvl, int atk, int def,
+                      int str, int dex, int kno, int wis, int gold, ImageIcon bild) {
+        super(name,maxHp,maxSp,mod,exp,lvl,atk,def,str,dex,kno,wis,gold,bild);
+    }
+    public static Spieler krieger = new Spieler("Krieger",30,15,
+            "str",0,1,15,15,10,8,2,3,0,
+            new ImageIcon("src/res/Klassen/Krieger.png"));
+    public static Spieler jaeger = new Spieler("Jäger",15,20,
+            "dex",0,1,15,10,3,12,4,6,0,
+            new ImageIcon("src/res/Klassen/Jaeger.png"));
+    public static Spieler magier = new Spieler("Magier",15,30,
+            "dex",0,1,20,10,1,3,15,3,0,
+            new ImageIcon("src/res/Klassen/Magier.png"));
+    public static Spieler kleriker = new Spieler("Kleriker",20,20,
+            "dex",0,1,15,15,3,4,3,10,0,
+            new ImageIcon("src/res/Klassen/Kleriker.png"));
 
 
 

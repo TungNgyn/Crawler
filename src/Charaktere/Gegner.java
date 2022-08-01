@@ -50,42 +50,46 @@ public class Gegner extends Charaktere{
     }
     //Schneemann
     public static Gegner schneemann = new Gegner("Schneemann", 20,0,"str",
-            20,1,15,15,3,2,3,1,5,new ImageIcon("res/Gegner/Schneemann.png"));
+            20,1,15,15,3,2,3,1,5,new ImageIcon("src/res/Gegner/Schneemann.png"));
+
+    //Mimic
+    public static Gegner mimic = new Gegner("Mimic", 40,0,"wis",
+            30,1,25,25,5,5,5,5,15,new ImageIcon("src/res/Gegner/Mimic.png"));
 
     //Mobs
     public static Gegner fledermaus = new Gegner("Fledermaus", 10,0,"dex",
-            5,1,5,10,1,4,1,2,3,new ImageIcon("res/Gegner/Fledermaus.png"));
+            5,1,5,10,1,4,1,2,3,new ImageIcon("src/res/Gegner/Fledermaus.png"));
 
     public static Gegner hornisse = new Gegner("Hornisse", 15,0,"dex",
-            5,1,5,13,2,5,1,2,4,new ImageIcon("res/Gegner/Hornisse.png"));
+            5,1,5,13,2,5,1,2,4,new ImageIcon("src/res/Gegner/Hornisse.png"));
     public static Gegner ratte = new Gegner("Ratte", 10,0,"dex",
-            5,1,5,10,1,5,1,1,7,new ImageIcon("res/Gegner/Ratte.png"));
+            5,1,5,10,1,5,1,1,7,new ImageIcon("src/res/Gegner/Ratte.png"));
     public static Gegner schlange = new Gegner("Schlange", 20,0,"str",
-            10,1,10,15,6,5,1,2,15,new ImageIcon("res/Gegner/Schlange.png"));
+            10,1,10,15,6,5,1,2,15,new ImageIcon("src/res/Gegner/Schlange.png"));
     public static Gegner skorpion = new Gegner("Skorpion", 30,0,"str",
-            15,1,8,20,8,3,2,1,15,new ImageIcon("res/Gegner/Skorpion.png"));
+            15,1,8,20,8,3,2,1,15,new ImageIcon("src/res/Gegner/Skorpion.png"));
     public static Gegner zombie = new Gegner("Zombie", 30,0,"str",
-            15,1,12,10,10,2,1,1,20,new ImageIcon("res/Gegner/Zombie.png"));
+            15,1,12,10,10,2,1,1,20,new ImageIcon("src/res/Gegner/Zombie.png"));
 
     //Mobs T2
     public static Gegner minotaurus = new Gegner("Minotaurus", 30,0,"str",
-            25,1,15,30,8,4,1,1,30,new ImageIcon("res/Gegner/Minotaurus.png"));
+            25,1,15,30,8,4,1,1,30,new ImageIcon("src/res/Gegner/Minotaurus.png"));
     public static Gegner oger = new Gegner("Oger", 30,0,"str",
-            25,1,15,30,7,4,2,2,25,new ImageIcon("res/Gegner/Oger.png"));
+            25,1,15,30,7,4,2,2,25,new ImageIcon("src/res/Gegner/Oger.png"));
     public static Gegner werwolf = new Gegner("Werwolf", 30,0,"dex",
-            25,1,20,25,5,9,2,1,25,new ImageIcon("res/Gegner/Werwolf.png"));
+            25,1,20,25,5,9,2,1,25,new ImageIcon("src/res/Gegner/Werwolf.png"));
     
     //Boss
     public static Gegner daemon = new Gegner("Dämon", 40,0,"wis",
-            50,1,30,20,7,3,1,8,50,new ImageIcon("res/Gegner/Daemon.png"));
+            50,1,30,20,7,3,1,8,50,new ImageIcon("src/res/Gegner/Daemon.png"));
 
     public static Gegner behemoth = new Gegner("Behemoth", 50,0,"str",
-            50,1,30,30,10,4,6,3,50,new ImageIcon("res/Gegner/Behemoth.png"));
+            50,1,30,30,10,4,6,3,50,new ImageIcon("src/res/Gegner/Behemoth.png"));
 
     public static Gegner drache = new Gegner("Drache", 70,0,"str",
-            50,1,40,30,10,4,2,3,50,new ImageIcon("res/Gegner/Drache.png"));
+            50,1,40,30,10,4,2,3,50,new ImageIcon("src/res/Gegner/Drache.png"));
 
     public static Gegner dunklerLord = new Gegner("Dunkler Lord", 30,0,"kno",
-            50,1,20,15,2,2,14,5,50,new ImageIcon("res/Gegner/DunklerLord.png"));
+            50,1,20,15,2,2,14,5,50,new ImageIcon("src/res/Gegner/DunklerLord.png"));
 
 }

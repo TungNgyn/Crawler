@@ -7,7 +7,7 @@ public class SpielFrame extends JFrame {
     public SpielFrame(SpielPanel spielPanel) {
         add(spielPanel);
         pack();
-        setTitle("Grinder");
+        setTitle("Crawler");
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);

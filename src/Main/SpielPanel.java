@@ -2,22 +2,21 @@ package Main;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.File;
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
 
+import static Charaktere.Spieler.*;
 import static Main.Spiel.*;
-import static Skills.Skills.*;
 
 public class SpielPanel extends JPanel {
     Image hintergrundBild;
-    public static JPanel gamePanel,statPanel,btnPanel,textPanel,skillInfoPanel,gegnerPanel,naviPanel,lagerPanel;
+    public static JPanel gamePanel,statPanel,btnPanel,textPanel,skillInfoPanel,gegnerPanel,naviPanel,
+            naviInfoPanel,lagerPanel, schatzPanel,ladenPanel,characterPanel, charInfoPanel, equipPanel,
+            treePanel, buchPanel;
     public static JButton skillBtn1, skillBtn2, skillBtn3, skillBtn4, skillBtn5, strUpBtn, dexUpBtn, knoUpBtn, wisUpBtn,
-            navi1Btn,navi2Btn,navi3Btn,navi4Btn,navi5Btn,navi6Btn;
+            navi1Btn,navi2Btn,navi3Btn,navi4Btn,navi5Btn,navi6Btn, schatzAuf, schatzIgno,
+            zauberbuchBtn, testBtn2, equipBtn, treeBtn;
     public static JLabel skillLblName, skillLblKraft, skillLblGenauigkeit, spielerNameLbl, spielerHp,skillLblKosten,
             spielerSp, spielerExp, spielerGold, spielerStr, spielerDex, spielerKno, spielerWis, gegnerBildLbl, gegnerNameLbl,
-            spielerAtk, spielerDef,statUpLbl,naviTitelLbl,naviEbeneLbl;
+            spielerAtk, spielerDef,statUpLbl,naviTitelLbl,naviEbeneLbl,naviInfoLbl, schatzBildLbl, charInfoLbl;
     private static JLabel vorschauklasseLbl,vorschauhpLbl,vorschauspLbl,vorschaustrLbl,vorschaudexLbl,
             vorschauknoLbl,vorschauwisLbl,vorschauatkLbl,vorschaudefLbl;
     public static JProgressBar spielerHpBar, spielerSpBar, spielerExpBar, gegnerHpBar;
@@ -32,9 +31,9 @@ public class SpielPanel extends JPanel {
         SpringLayout layout = new SpringLayout();
         setLayout(layout);
         setPreferredSize(new Dimension(800,600));
-        ImageIcon icon = new ImageIcon("res/Hintergrund/Titel.jpg");
+        ImageIcon icon = new ImageIcon("src/res/Hintergrund/Titel.jpg");
         hintergrundBild = icon.getImage();
-        JLabel titelLbl = new JLabel("Grinder");
+        JLabel titelLbl = new JLabel("Crawler");
         titelLbl.setFont(new Font("Times New Roman", Font.BOLD, 90));
         titelLbl.setForeground(Color.WHITE);
         add(titelLbl);
@@ -55,8 +54,8 @@ public class SpielPanel extends JPanel {
     }
     public void setSpielScreen() {
         //region init
-        ImageIcon icon = new ImageIcon("res/Hintergrund/SpielGUI.png");
-        ImageIcon statUpBild = new ImageIcon("res/Icons/Plus.png");
+        ImageIcon icon = new ImageIcon("src/res/Hintergrund/SpielGUI.png");
+        ImageIcon statUpBild = new ImageIcon("src/res/Icons/Plus.png");
         strUpBtn = new JButton(statUpBild);
         dexUpBtn = new JButton(statUpBild);
         knoUpBtn = new JButton(statUpBild);
@@ -71,6 +70,7 @@ public class SpielPanel extends JPanel {
         setLayout(layout);
         //endregion
         //region gamepanel
+        //region init
         gamePanel = new JPanel();
         add(gamePanel);
         gamePanel.setPreferredSize(new Dimension(500,300));
@@ -79,7 +79,31 @@ public class SpielPanel extends JPanel {
 
         layout.putConstraint(SpringLayout.WEST,gamePanel,15, SpringLayout.WEST,this);
         layout.putConstraint(SpringLayout.NORTH,gamePanel,20, SpringLayout.NORTH,this);
+        //endregion
+        //region ausrüstung
+        equipPanel = new JPanel();
+        equipPanel.setPreferredSize(new Dimension(490,290));
+        equipPanel.setBackground(Color.YELLOW);
 
+        equipPanel.setVisible(false);
+        gamePanel.add(equipPanel);
+        //endregion
+        //region skillung
+        treePanel = new JPanel();
+        treePanel.setPreferredSize(new Dimension(490,290));
+        treePanel.setBackground(Color.BLUE);
+
+        treePanel.setVisible(false);
+        gamePanel.add(treePanel);
+        //endregion
+        //region fähigkeiten
+        buchPanel = new JPanel();
+        buchPanel.setPreferredSize(new Dimension(490,290));
+        buchPanel.setBackground(Color.GREEN);
+
+        buchPanel.setVisible(false);
+        gamePanel.add(buchPanel);
+        //endregion
         //region gegner
         gegnerPanel = new JPanel();
         SpringLayout layoutGegner = new SpringLayout();
@@ -123,6 +147,13 @@ public class SpielPanel extends JPanel {
         naviTitelLbl = new JLabel("Labyrinth");
         naviEbeneLbl = new JLabel("Ebene " + ebeneCounter);
 
+        navi1Btn.setPreferredSize(new Dimension(24,24));
+        navi2Btn.setPreferredSize(new Dimension(24,24));
+        navi3Btn.setPreferredSize(new Dimension(24,24));
+        navi4Btn.setPreferredSize(new Dimension(24,24));
+        navi5Btn.setPreferredSize(new Dimension(24,24));
+        navi6Btn.setPreferredSize(new Dimension(24,24));
+
         naviTitelLbl.setFont(new Font("Segoe UI", Font.BOLD, 32));
         naviTitelLbl.setForeground(Color.WHITE);
         naviEbeneLbl.setFont(new Font("Segoe UI", Font.BOLD, 12));
@@ -159,20 +190,67 @@ public class SpielPanel extends JPanel {
         //endregion
         //region lager
         lagerPanel = new JPanel();
-        SpringLayout layoutLager = new SpringLayout();
         lagerPanel.setPreferredSize(new Dimension(490,285));
         lagerPanel.setBackground(Color.BLACK);
 
-        JLabel lagerBildLbl = new JLabel(new ImageIcon("res/NaviBilder/Lager.png"));
+        JLabel lagerBildLbl = new JLabel(new ImageIcon("src/res/NaviBilder/Lager.png"));
         lagerPanel.setVisible(false);
         lagerPanel.add(lagerBildLbl);
         gamePanel.add(lagerPanel);
+        //endregion
+        //region schatz
+        schatzPanel = new JPanel();
+        schatzPanel.setPreferredSize(new Dimension(490,285));
+        schatzPanel.setBackground(Color.BLACK);
+
+        SpringLayout schatzLayout = new SpringLayout();
+        schatzPanel.setLayout(schatzLayout);
+
+        schatzBildLbl = new JLabel(new ImageIcon("src/res/NaviBilder/Schatz.png"));
+        schatzAuf = new JButton("Öffnen");
+        schatzIgno = new JButton("Ignorieren");
+
+        schatzAuf.setBackground(Color.BLACK);
+        schatzIgno.setBackground(Color.BLACK);
+        schatzAuf.setForeground(Color.WHITE);
+        schatzIgno.setForeground(Color.WHITE);
+
+        schatzLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, schatzBildLbl,0,SpringLayout.HORIZONTAL_CENTER,schatzPanel);
+        schatzLayout.putConstraint(SpringLayout.WEST, schatzAuf,10,SpringLayout.WEST,schatzPanel);
+        schatzLayout.putConstraint(SpringLayout.EAST, schatzIgno,-10,SpringLayout.EAST,schatzPanel);
+
+        schatzLayout.putConstraint(SpringLayout.SOUTH, schatzAuf,-10,SpringLayout.SOUTH,schatzPanel);
+        schatzLayout.putConstraint(SpringLayout.SOUTH, schatzIgno,-10,SpringLayout.SOUTH,schatzPanel);
+
+        schatzIgno.addActionListener(e -> {
+            schatzPanel.setVisible(false);
+            naviPanel.setVisible(true);
+        });
+        schatzAuf.addActionListener(e -> {
+            SchatzEncounter();
+        });
+
+        schatzPanel.add(schatzAuf);
+        schatzPanel.add(schatzIgno);
+        schatzPanel.setVisible(false);
+        schatzPanel.add(schatzBildLbl);
+        gamePanel.add(schatzPanel);
+        //endregion
+        //region laden
+        ladenPanel = new JPanel();
+        ladenPanel.setPreferredSize(new Dimension(490,285));
+        ladenPanel.setBackground(Color.BLACK);
+
+        JLabel ladenBildLbl = new JLabel(new ImageIcon("src/res/NaviBilder/Laden.png"));
+        ladenPanel.setVisible(false);
+        ladenPanel.add(ladenBildLbl);
+        gamePanel.add(ladenPanel);
         //endregion
         //endregion
         //region statpanel
         statPanel = new JPanel();
         add(statPanel);
-        statPanel.setPreferredSize(new Dimension(250,430));
+        statPanel.setPreferredSize(new Dimension(250,455));
         statPanel.setBorder(BorderFactory.createLineBorder(Color.WHITE,2,true));
         statPanel.setBackground(Color.BLACK);
         SpringLayout layoutStat = new SpringLayout();
@@ -334,10 +412,10 @@ public class SpielPanel extends JPanel {
 
         layoutStat.putConstraint(SpringLayout.NORTH,spielerAtk,15,SpringLayout.SOUTH,spielerGoldLbl);
         layoutStat.putConstraint(SpringLayout.NORTH,spielerDef,10,SpringLayout.SOUTH,spielerAtk);
-        layoutStat.putConstraint(SpringLayout.NORTH,strUpBtn,6,SpringLayout.SOUTH,spielerDef);
-        layoutStat.putConstraint(SpringLayout.NORTH,dexUpBtn,6,SpringLayout.SOUTH,spielerStr);
-        layoutStat.putConstraint(SpringLayout.NORTH,knoUpBtn,6,SpringLayout.SOUTH,spielerDex);
-        layoutStat.putConstraint(SpringLayout.NORTH,wisUpBtn,6,SpringLayout.SOUTH,spielerKno);
+        layoutStat.putConstraint(SpringLayout.NORTH,strUpBtn,13,SpringLayout.SOUTH,spielerDef);
+        layoutStat.putConstraint(SpringLayout.NORTH,dexUpBtn,13,SpringLayout.SOUTH,spielerStr);
+        layoutStat.putConstraint(SpringLayout.NORTH,knoUpBtn,13,SpringLayout.SOUTH,spielerDex);
+        layoutStat.putConstraint(SpringLayout.NORTH,wisUpBtn,13,SpringLayout.SOUTH,spielerKno);
         layoutStat.putConstraint(SpringLayout.NORTH,spielerStr,10,SpringLayout.SOUTH,spielerDef);
         layoutStat.putConstraint(SpringLayout.NORTH,spielerDex,10,SpringLayout.SOUTH,spielerStr);
         layoutStat.putConstraint(SpringLayout.NORTH,spielerKno,10,SpringLayout.SOUTH,spielerDex);
@@ -350,6 +428,16 @@ public class SpielPanel extends JPanel {
         wisUpBtn.setVisible(false);
         statUpLbl.setVisible(false);
         setStatUpBtn();
+
+//        strUpBtn.setBackground(Color.BLACK);
+//        dexUpBtn.setBackground(Color.BLACK);
+//        knoUpBtn.setBackground(Color.BLACK);
+//        wisUpBtn.setBackground(Color.BLACK);
+
+        strUpBtn.setPreferredSize(new Dimension(16,16));
+        dexUpBtn.setPreferredSize(new Dimension(16,16));
+        knoUpBtn.setPreferredSize(new Dimension(16,16));
+        wisUpBtn.setPreferredSize(new Dimension(16,16));
 
         statPanel.add(strUpBtn);
         statPanel.add(dexUpBtn);
@@ -407,11 +495,11 @@ public class SpielPanel extends JPanel {
         btnPanel.setLayout(new GridLayout());
         add(btnPanel);
 
-        skillBtn1 = new JButton(new ImageIcon("res/Skills/Ritter/active15.png"));
-        skillBtn2 = new JButton(new ImageIcon("res/Skills/Ritter/active15.png"));
-        skillBtn3 = new JButton(new ImageIcon("res/Skills/Ritter/active15.png"));
-        skillBtn4 = new JButton(new ImageIcon("res/Skills/Ritter/active15.png"));
-        skillBtn5 = new JButton(new ImageIcon("res/Skills/Ritter/active15.png"));
+        skillBtn1 = new JButton(new ImageIcon("src/res/Skills/Ritter/active15.png"));
+        skillBtn2 = new JButton(new ImageIcon("src/res/Skills/Ritter/active15.png"));
+        skillBtn3 = new JButton(new ImageIcon("src/res/Skills/Ritter/active15.png"));
+        skillBtn4 = new JButton(new ImageIcon("src/res/Skills/Ritter/active15.png"));
+        skillBtn5 = new JButton(new ImageIcon("src/res/Skills/Ritter/active15.png"));
 
         skillBtn1.setBackground(Color.BLACK);
         skillBtn2.setBackground(Color.BLACK);
@@ -431,7 +519,37 @@ public class SpielPanel extends JPanel {
         btnPanel.add(skillBtn4);
         btnPanel.add(skillBtn5);
         //endregion
+        //region characterpanel
+        //region init
+        characterPanel = new JPanel();
+        characterPanel.setPreferredSize(new Dimension(250,64));
+        characterPanel.setBorder(BorderFactory.createLineBorder(Color.WHITE,2,true));
+        characterPanel.setBackground(Color.BLACK);
+        characterPanel.setLayout(new GridLayout(1,4));
+
+        layout.putConstraint(SpringLayout.SOUTH,characterPanel,-30, SpringLayout.SOUTH,this);
+        layout.putConstraint(SpringLayout.WEST,characterPanel,20, SpringLayout.EAST,textPanel);
+
+        equipBtn = new JButton(new ImageIcon("src/res/Icons/Helm.png"));
+        treeBtn = new JButton(new ImageIcon("src/res/Icons/tree.png"));
+        zauberbuchBtn = new JButton(new ImageIcon("src/res/Icons/Zauberbuch.png"));
+        testBtn2 = new JButton();
+
+        equipBtn.setBackground(Color.BLACK);
+        treeBtn.setBackground(Color.BLACK);
+        zauberbuchBtn.setBackground(Color.BLACK);
+        testBtn2.setBackground(Color.BLACK);
+
+        characterPanel.add(equipBtn);
+        characterPanel.add(treeBtn);
+        characterPanel.add(zauberbuchBtn);
+        characterPanel.add(testBtn2);
+
+        add(characterPanel);
+        //endregion
+        //endregion
         //region buttoninfo
+        //region skillinfo panel
         skillInfoPanel = new JPanel();
         skillInfoPanel.setPreferredSize(new Dimension(185,50));
         skillInfoPanel.setBorder(BorderFactory.createLineBorder(Color.WHITE,2,true));
@@ -475,10 +593,56 @@ public class SpielPanel extends JPanel {
         skillInfoPanel.setVisible(false);
         add(skillInfoPanel);
         //endregion
+        //region naviinfo panel
+        naviInfoPanel = new JPanel();
+        naviInfoPanel.setPreferredSize(new Dimension(185,50));
+        naviInfoPanel.setBorder(BorderFactory.createLineBorder(Color.WHITE,2,true));
+        naviInfoPanel.setBackground(Color.BLACK);
+        SpringLayout layoutNaviInfo = new SpringLayout();
+        naviInfoPanel.setLayout(layoutNaviInfo);
+
+        layout.putConstraint(SpringLayout.WEST,naviInfoPanel,15, SpringLayout.EAST,btnPanel);
+        layout.putConstraint(SpringLayout.NORTH,naviInfoPanel,10, SpringLayout.SOUTH,textPanel);
+
+        naviInfoLbl = new JLabel();
+        naviInfoLbl.setForeground(Color.WHITE);
+        naviInfoLbl.setFont(skillLblFont);
+
+        layoutNaviInfo.putConstraint(SpringLayout.HORIZONTAL_CENTER,naviInfoLbl,0,SpringLayout.HORIZONTAL_CENTER,naviInfoPanel);
+        layoutNaviInfo.putConstraint(SpringLayout.VERTICAL_CENTER,naviInfoLbl,0,SpringLayout.VERTICAL_CENTER,naviInfoPanel);
+
+        naviInfoPanel.add(naviInfoLbl);
+        naviInfoPanel.setVisible(false);
+        add(naviInfoPanel);
+        //endregion
+        //region charinfo panel
+        charInfoPanel = new JPanel();
+        charInfoPanel.setPreferredSize(new Dimension(185,50));
+        charInfoPanel.setBorder(BorderFactory.createLineBorder(Color.WHITE,2,true));
+        charInfoPanel.setBackground(Color.BLACK);
+        SpringLayout layoutCharInfo = new SpringLayout();
+        charInfoPanel.setLayout(layoutCharInfo);
+
+        layout.putConstraint(SpringLayout.WEST,charInfoPanel,15, SpringLayout.EAST,btnPanel);
+        layout.putConstraint(SpringLayout.NORTH,charInfoPanel,10, SpringLayout.SOUTH,textPanel);
+
+        charInfoLbl = new JLabel();
+        charInfoLbl.setForeground(Color.WHITE);
+        charInfoLbl.setFont(skillLblFont);
+
+        layoutCharInfo.putConstraint(SpringLayout.HORIZONTAL_CENTER,charInfoLbl,0,SpringLayout.HORIZONTAL_CENTER,charInfoPanel);
+        layoutCharInfo.putConstraint(SpringLayout.VERTICAL_CENTER,charInfoLbl,0,SpringLayout.VERTICAL_CENTER,charInfoPanel);
+
+        charInfoPanel.add(charInfoLbl);
+        charInfoPanel.setVisible(false);
+        add(charInfoPanel);
+        setCharBtn();
+        //endregion
+        //endregion
     }
     public void setAuswahlScreen() {
         //region init
-        ImageIcon icon = new ImageIcon("res/Hintergrund/SpielGUI.png");
+        ImageIcon icon = new ImageIcon("src/res/Hintergrund/SpielGUI.png");
         hintergrundBild = icon.getImage();
         removeAll();
         repaint();
@@ -596,66 +760,74 @@ public class SpielPanel extends JPanel {
         klerikerBtn.setForeground(Color.WHITE);
 
         kriegerBtn.addActionListener(e -> {
-            spieler.setName("Krieger");
-            spieler.setLvl(1);
-            spieler.setHp(30);
-            spieler.setSp(15);
-            spieler.setMaxHp(30);
-            spieler.setMaxSp(15);
-            spieler.setAtk(15);
-            spieler.setDef(15);
-            spieler.setStr(10);
-            spieler.setDex(8);
-            spieler.setKno(2);
-            spieler.setWis(3);
-            vorschauLbl.setIcon(new ImageIcon("res/Klassen/Krieger.png"));
+            krieger.setLvl(1);
+            krieger.setHp(30);
+            krieger.setSp(15);
+            krieger.setMaxHp(30);
+            krieger.setMaxSp(15);
+            krieger.setAtk(15);
+            krieger.setDef(15);
+            krieger.setStr(10);
+            krieger.setDex(8);
+            krieger.setKno(2);
+            krieger.setWis(3);
+            krieger.setExp(0);
+            krieger.setGold(0);
+            spieler = krieger;
+            vorschauLbl.setIcon(spieler.getBild());
             updateStatsVorschauLbl();
         });
         jaegerBtn.addActionListener(e -> {
-            spieler.setName("Jäger");
-            spieler.setLvl(1);
-            spieler.setHp(15);
-            spieler.setSp(20);
-            spieler.setMaxHp(15);
-            spieler.setMaxSp(20);
-            spieler.setAtk(15);
-            spieler.setDef(10);
-            spieler.setStr(3);
-            spieler.setDex(12);
-            spieler.setKno(4);
-            spieler.setWis(6);vorschauLbl.setIcon(new ImageIcon("res/Klassen/Jaeger.png"));
+            jaeger.setLvl(1);
+            jaeger.setHp(15);
+            jaeger.setSp(20);
+            jaeger.setMaxHp(15);
+            jaeger.setMaxSp(20);
+            jaeger.setAtk(15);
+            jaeger.setDef(10);
+            jaeger.setStr(3);
+            jaeger.setDex(12);
+            jaeger.setKno(4);
+            jaeger.setExp(0);
+            jaeger.setGold(0);
+            spieler = jaeger;
+            vorschauLbl.setIcon(spieler.getBild());
             updateStatsVorschauLbl();
         });
         magierBtn.addActionListener(e -> {
-            spieler.setName("Magier");
-            spieler.setLvl(1);
-            spieler.setHp(15);
-            spieler.setSp(30);
-            spieler.setMaxHp(15);
-            spieler.setMaxSp(30);
-            spieler.setAtk(20);
-            spieler.setDef(10);
-            spieler.setStr(1);
-            spieler.setDex(3);
-            spieler.setKno(15);
-            spieler.setWis(3);
-            vorschauLbl.setIcon(new ImageIcon("res/Klassen/Magier.png"));
+            magier.setLvl(1);
+            magier.setHp(15);
+            magier.setSp(30);
+            magier.setMaxHp(15);
+            magier.setMaxSp(30);
+            magier.setAtk(20);
+            magier.setDef(10);
+            magier.setStr(1);
+            magier.setDex(3);
+            magier.setKno(15);
+            magier.setWis(3);
+            magier.setExp(0);
+            magier.setGold(0);
+            spieler = magier;
+            vorschauLbl.setIcon(spieler.getBild());
             updateStatsVorschauLbl();
         });
         klerikerBtn.addActionListener(e -> {
-            spieler.setName("Kleriker");
-            spieler.setLvl(1);
-            spieler.setHp(20);
-            spieler.setSp(20);
-            spieler.setMaxHp(20);
-            spieler.setMaxSp(20);
-            spieler.setAtk(15);
-            spieler.setDef(15);
-            spieler.setStr(3);
-            spieler.setDex(4);
-            spieler.setKno(3);
-            spieler.setWis(10);
-            vorschauLbl.setIcon(new ImageIcon("res/Klassen/Kleriker.png"));
+            kleriker.setLvl(1);
+            kleriker.setHp(20);
+            kleriker.setSp(20);
+            kleriker.setMaxHp(20);
+            kleriker.setMaxSp(20);
+            kleriker.setAtk(15);
+            kleriker.setDef(15);
+            kleriker.setStr(3);
+            kleriker.setDex(4);
+            kleriker.setKno(3);
+            kleriker.setWis(10);
+            kleriker.setExp(0);
+            kleriker.setGold(0);
+            spieler = kleriker;
+            vorschauLbl.setIcon(spieler.getBild());
             updateStatsVorschauLbl();
         });
         //endregion
@@ -698,7 +870,7 @@ public class SpielPanel extends JPanel {
     }
     public void setGameOverScreen() {
         removeAll();
-        ImageIcon icon = new ImageIcon("res/Hintergrund/GameOver.jpg");
+        ImageIcon icon = new ImageIcon("src/res/Hintergrund/GameOver.jpg");
         hintergrundBild = icon.getImage();
         repaint();
         revalidate();
