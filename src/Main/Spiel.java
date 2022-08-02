@@ -2,6 +2,7 @@ package Main;
 
 import Charaktere.Gegner;
 import Charaktere.Spieler;
+import Equip.Equip;
 import Navigation.Navigation;
 import Skills.Skills;
 import Util.Eingabe;
@@ -16,6 +17,9 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import static Charaktere.Gegner.*;
+import static Equip.Ruestung.Helm.*;
+import static Equip.Schmuck.Ring.*;
+import static Equip.Waffe.Schwert.*;
 import static Main.SpielPanel.*;
 import static Navigation.Navigation.*;
 import static Skills.Skills.*;
@@ -39,6 +43,7 @@ public class Spiel {
     static int raumCounter = 0;
     static int ebeneCounter = 1;
     static int kampfRunde = 0;
+    public static int totalAtk, totalDef, totalStr, totalDex, totalKno, totalWis, totalHp, totalSp;
 
     public Spiel() {
         spieler = new Spieler();
@@ -129,7 +134,6 @@ public class Spiel {
         }
     }
     public static void Test() {
-        UpdateSpieler();
         JFrame adminFrame = new JFrame("Admin");
         JPanel adminPanel = new JPanel();
         adminPanel.addKeyListener(eingabe);
@@ -147,6 +151,7 @@ public class Spiel {
         JButton bossEncBtn = new JButton("Boss Encounter");
         JButton schatzRaum = new JButton("Schatzraum");
         JButton ladenRaum = new JButton("Ladenraum");
+        JButton ringBtn = new JButton("OP Ring");
 
 
         hpDownBtn.addActionListener(e -> {
@@ -189,7 +194,10 @@ public class Spiel {
         ladenRaum.addActionListener(e -> {
             NavigationLaden();
         });
-
+        ringBtn.addActionListener(e -> {
+            mainSchmuck = opRing;
+            UpdateSpieler();
+        });
 
         adminPanel.add(hpDownBtn);
         adminPanel.add(hpUpBtn);
@@ -201,6 +209,7 @@ public class Spiel {
         adminPanel.add(bossEncBtn);
         adminPanel.add(schatzRaum);
         adminPanel.add(ladenRaum);
+        adminPanel.add(ringBtn);
 
         //endregion
 
@@ -208,10 +217,21 @@ public class Spiel {
         adminFrame.setPreferredSize(new Dimension(400,400));
         adminFrame.pack();
         adminFrame.setResizable(false);
-        adminFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         adminFrame.setVisible(true);
+
+        mainWaffe = holzschwert;
+        mainRuestung = eisenhelm;
+        mainSchmuck = ring;
+        UpdateSpieler();
     }
     public static void UpdateSpieler(){
+        totalAtk = spieler.getAtk() + mainWaffe.getAtk() + mainRuestung.getAtk() + mainSchmuck.getAtk();
+        totalDef = spieler.getDef() + mainWaffe.getDef() + mainRuestung.getDef() + mainSchmuck.getDef();
+        totalStr = spieler.getStr() + mainWaffe.getStr() + mainRuestung.getStr() + mainSchmuck.getStr();
+        totalDex = spieler.getDex() + mainWaffe.getDex() + mainRuestung.getDex() + mainSchmuck.getDex();
+        totalKno = spieler.getKno() + mainWaffe.getKno() + mainRuestung.getKno() + mainSchmuck.getKno();
+        totalWis = spieler.getWis() + mainWaffe.getWis() + mainRuestung.getWis() + mainSchmuck.getWis();
+
         if (!spieler.amLeben()) spielPanel.setGameOverScreen();
         if (spieler.getHp() > spieler.getMaxHp()) spieler.setHp(spieler.getMaxHp());
         if (spieler.getHp() <= 0) spieler.setHp(0);
@@ -227,12 +247,12 @@ public class Spiel {
         spielerSpBar.setValue(spieler.getSp());
         spielerExp.setText("" + spieler.getExp());
         spielerExpBar.setValue(spieler.getExp());
-        spielerAtk.setText("" + spieler.getAtk());
-        spielerDef.setText("" + spieler.getDef());
-        spielerStr.setText("" + spieler.getStr());
-        spielerDex.setText("" + spieler.getDex());
-        spielerKno.setText("" + spieler.getKno());
-        spielerWis.setText("" + spieler.getWis());
+        spielerAtk.setText("" + (totalAtk));
+        spielerDef.setText("" + (totalDef));
+        spielerStr.setText("" + (totalStr));
+        spielerDex.setText("" + (totalDex));
+        spielerKno.setText("" + (totalKno));
+        spielerWis.setText("" + (totalWis));
     }
     //region battle
     public static void Encounter(Gegner x, int lvl) {
@@ -1009,6 +1029,8 @@ public class Spiel {
                 equipPanel.setVisible(true);
                 buchPanel.setVisible(false);
                 treePanel.setVisible(false);
+
+                UpdateEquip(mainWaffe, mainRuestung, mainSchmuck);
             } else {
                 equipPanel.setVisible(false);
             }
@@ -1093,6 +1115,42 @@ public class Spiel {
         });
     }
 
+
+    public static void UpdateEquip(Equip x, Equip y, Equip z) {
+        //region Waffen
+        waffenBildLbl.setIcon(x.getBild());
+        waffenNameLbl.setText(x.getName());
+        waffenAtkLbl.setText("Atk: " + x.getAtk());
+        waffenDefLbl.setText("Def: " + x.getDef());
+        waffenStrLbl.setText("<html><font color='#ff0000'>Str: " + x.getStr());
+        waffenDexLbl.setText("<html><font color='#3cb371'>Ges: " + x.getDex());
+        waffenKnoLbl.setText("<html><font color='#94d0ff'>Int: " + x.getKno());
+        waffenWisLbl.setText("<html><font color='#ffe400'>Wei: " + x.getWis());
+        waffenWertLbl.setText("<html><font color='#ffd700'>Wert: " + x.getWert());
+        //endregion
+        //region Rüstung
+        ruestungBildLbl.setIcon(y.getBild());
+        ruestungNameLbl.setText(y.getName());
+        ruestungAtkLbl.setText("Atk: " + y.getAtk());
+        ruestungDefLbl.setText("Def: " + y.getDef());
+        ruestungStrLbl.setText("<html><font color='#ff0000'>Str: " + y.getStr());
+        ruestungDexLbl.setText("<html><font color='#3cb371'>Ges: " + y.getDex());
+        ruestungKnoLbl.setText("<html><font color='#94d0ff'>Int: " + y.getKno());
+        ruestungWisLbl.setText("<html><font color='#ffe400'>Wei: " + y.getWis());
+        ruestungWertLbl.setText("<html><font color='#ffd700'>Wert: " + y.getWert());
+        //endregion
+        //region
+        schmuckBildLbl.setIcon(z.getBild());
+        schmuckNameLbl.setText(z.getName());
+        schmuckAtkLbl.setText("Atk: " + z.getAtk());
+        schmuckDefLbl.setText("Def: " + z.getDef());
+        schmuckStrLbl.setText("<html><font color='#ff0000'>Str: " + z.getStr());
+        schmuckDexLbl.setText("<html><font color='#3cb371'>Ges: " + z.getDex());
+        schmuckKnoLbl.setText("<html><font color='#94d0ff'>Int: " + z.getKno());
+        schmuckWisLbl.setText("<html><font color='#ffe400'>Wei: " + z.getWis());
+        schmuckWertLbl.setText("<html><font color='#ffd700'>Wert: " + z.getWert());
+        //endregion
+    }
     public static void CharInfoUpdate(String name) {
         charInfoLbl.setText(name);
     }

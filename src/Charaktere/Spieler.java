@@ -3,6 +3,8 @@ package Charaktere;
 import javax.swing.*;
 import java.util.Random;
 
+import static Main.Spiel.*;
+
 public class Spieler extends Charaktere {
 
     public Spieler() {
@@ -41,10 +43,10 @@ public class Spieler extends Charaktere {
     @Override
     public int angriff(String mod, int kraft) {
         double angriffsWert = switch (mod) {
-            case "str" -> (atk + str + (str * ((double) kraft / 100)));
-            case "dex" -> (atk + dex + (dex * ((double) kraft / 100)));
-            case "kno" -> (atk + kno + (kno * ((double) kraft / 100)));
-            case "wis" -> (atk + wis + (wis * ((double) kraft / 100)));
+            case "str" -> (totalAtk + totalStr + (totalStr * ((double) kraft / 100)));
+            case "dex" -> (totalAtk + totalDex + (totalDex * ((double) kraft / 100)));
+            case "kno" -> (totalAtk + totalKno + (totalKno * ((double) kraft / 100)));
+            case "wis" -> (totalAtk + totalWis + (totalWis * ((double) kraft / 100)));
             default -> 0;
         };
 
@@ -56,10 +58,10 @@ public class Spieler extends Charaktere {
     }
     public int verteidigung(String mod) {
         double verteidigung = switch (mod) {
-            case "str" -> str*0.5 + def;
-            case "dex" -> dex*0.5 + def;
-            case "kno" -> kno*0.5 + def;
-            case "wis" -> wis*0.5 + def;
+            case "str" -> totalStr*0.5 + totalDef;
+            case "dex" -> totalDex*0.5 + totalDef;
+            case "kno" -> totalKno*0.5 + totalDef;
+            case "wis" -> totalWis*0.5 + totalDef;
             default -> 0;
         };
 

@@ -16,7 +16,13 @@ public class SpielPanel extends JPanel {
             zauberbuchBtn, testBtn2, equipBtn, treeBtn;
     public static JLabel skillLblName, skillLblKraft, skillLblGenauigkeit, spielerNameLbl, spielerHp,skillLblKosten,
             spielerSp, spielerExp, spielerGold, spielerStr, spielerDex, spielerKno, spielerWis, gegnerBildLbl, gegnerNameLbl,
-            spielerAtk, spielerDef,statUpLbl,naviTitelLbl,naviEbeneLbl,naviInfoLbl, schatzBildLbl, charInfoLbl;
+            spielerAtk, spielerDef,statUpLbl,naviTitelLbl,naviEbeneLbl,naviInfoLbl, schatzBildLbl, charInfoLbl,
+            waffenNameLbl,waffenBildLbl,waffenWertLbl, waffenStrLbl, waffenAtkLbl, waffenDexLbl,waffenDefLbl,
+            waffenKnoLbl,waffenWisLbl,
+            ruestungBildLbl,ruestungNameLbl,ruestungAtkLbl,ruestungDefLbl,ruestungStrLbl,
+            ruestungDexLbl, ruestungKnoLbl, ruestungWisLbl, ruestungWertLbl,
+            schmuckNameLbl,schmuckBildLbl,schmuckWertLbl, schmuckStrLbl, schmuckAtkLbl, schmuckDexLbl,schmuckDefLbl,
+            schmuckKnoLbl,schmuckWisLbl;
     private static JLabel vorschauklasseLbl,vorschauhpLbl,vorschauspLbl,vorschaustrLbl,vorschaudexLbl,
             vorschauknoLbl,vorschauwisLbl,vorschauatkLbl,vorschaudefLbl;
     public static JProgressBar spielerHpBar, spielerSpBar, spielerExpBar, gegnerHpBar;
@@ -83,8 +89,220 @@ public class SpielPanel extends JPanel {
         //region ausrüstung
         equipPanel = new JPanel();
         equipPanel.setPreferredSize(new Dimension(490,290));
-        equipPanel.setBackground(Color.YELLOW);
+        equipPanel.setBackground(Color.BLACK);
+        SpringLayout layoutEquip = new SpringLayout();
+        equipPanel.setLayout(layoutEquip);
 
+        Font equipFont = new Font("Segoe UI", Font.BOLD, 16);
+        Font infoFont = new Font("Segoe UI", Font.BOLD, 12);
+
+        JLabel equipTitelLbl = new JLabel("Ausrüstung");
+        equipTitelLbl.setFont(new Font("Segoe UI", Font.BOLD, 22));
+        equipTitelLbl.setForeground(Color.WHITE);
+
+        layoutEquip.putConstraint(SpringLayout.HORIZONTAL_CENTER,equipTitelLbl,0,SpringLayout.HORIZONTAL_CENTER,equipPanel);
+        equipPanel.add(equipTitelLbl);
+
+        //region Waffen
+        JPanel waffenPanel = new JPanel();
+        waffenPanel.setPreferredSize(new Dimension(400,54));
+        waffenPanel.setBorder(BorderFactory.createLineBorder(Color.WHITE,2,true));
+        waffenPanel.setBackground(Color.BLACK);
+        SpringLayout waffenLayout = new SpringLayout();
+        waffenPanel.setLayout(waffenLayout);
+        waffenBildLbl = new JLabel();
+        waffenNameLbl = new JLabel();
+        waffenAtkLbl = new JLabel("ATK");
+        waffenDefLbl = new JLabel("DEF");
+        waffenStrLbl = new JLabel("STR");
+        waffenDexLbl = new JLabel("DEX");
+        waffenKnoLbl = new JLabel("KNO");
+        waffenWisLbl = new JLabel("WIS");
+        waffenWertLbl = new JLabel("Wert");
+
+        waffenNameLbl.setFont(equipFont);
+        waffenNameLbl.setForeground(Color.WHITE);
+        waffenAtkLbl.setFont(infoFont);
+        waffenAtkLbl.setForeground(Color.WHITE);
+        waffenDefLbl.setFont(infoFont);
+        waffenDefLbl.setForeground(Color.WHITE);
+        waffenStrLbl.setFont(infoFont);
+        waffenStrLbl.setForeground(Color.WHITE);
+        waffenDexLbl.setFont(infoFont);
+        waffenDexLbl.setForeground(Color.WHITE);
+        waffenKnoLbl.setFont(infoFont);
+        waffenKnoLbl.setForeground(Color.WHITE);
+        waffenWisLbl.setFont(infoFont);
+        waffenWisLbl.setForeground(Color.WHITE);
+        waffenWertLbl.setFont(infoFont);
+        waffenWertLbl.setForeground(Color.WHITE);
+
+        layoutEquip.putConstraint(SpringLayout.HORIZONTAL_CENTER,waffenPanel,0,SpringLayout.HORIZONTAL_CENTER,equipPanel);
+        layoutEquip.putConstraint(SpringLayout.NORTH,waffenPanel,40,SpringLayout.NORTH,equipPanel);
+
+        waffenLayout.putConstraint(SpringLayout.WEST,waffenBildLbl,0,SpringLayout.WEST,waffenPanel);
+        waffenLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, waffenNameLbl, 0,SpringLayout.HORIZONTAL_CENTER,waffenPanel);
+
+        waffenLayout.putConstraint(SpringLayout.WEST, waffenAtkLbl, 60,SpringLayout.WEST,waffenPanel);
+        waffenLayout.putConstraint(SpringLayout.WEST, waffenDefLbl, 115,SpringLayout.WEST,waffenPanel);
+        waffenLayout.putConstraint(SpringLayout.WEST, waffenStrLbl, 170,SpringLayout.WEST,waffenPanel);
+        waffenLayout.putConstraint(SpringLayout.WEST, waffenDexLbl, 225,SpringLayout.WEST,waffenPanel);
+        waffenLayout.putConstraint(SpringLayout.WEST, waffenKnoLbl, 280,SpringLayout.WEST,waffenPanel);
+        waffenLayout.putConstraint(SpringLayout.WEST, waffenWisLbl, 335,SpringLayout.WEST,waffenPanel);
+        waffenLayout.putConstraint(SpringLayout.WEST, waffenWertLbl, 300,SpringLayout.WEST,waffenPanel);
+
+        waffenLayout.putConstraint(SpringLayout.SOUTH, waffenAtkLbl, -2,SpringLayout.SOUTH,waffenPanel);
+        waffenLayout.putConstraint(SpringLayout.SOUTH, waffenDefLbl, -2,SpringLayout.SOUTH,waffenPanel);
+        waffenLayout.putConstraint(SpringLayout.SOUTH, waffenStrLbl, -2,SpringLayout.SOUTH,waffenPanel);
+        waffenLayout.putConstraint(SpringLayout.SOUTH, waffenDexLbl, -2,SpringLayout.SOUTH,waffenPanel);
+        waffenLayout.putConstraint(SpringLayout.SOUTH, waffenKnoLbl, -2,SpringLayout.SOUTH,waffenPanel);
+        waffenLayout.putConstraint(SpringLayout.SOUTH, waffenWisLbl, -2,SpringLayout.SOUTH,waffenPanel);
+
+        waffenPanel.add(waffenBildLbl);
+        waffenPanel.add(waffenNameLbl);
+        waffenPanel.add(waffenAtkLbl);
+        waffenPanel.add(waffenDefLbl);
+        waffenPanel.add(waffenStrLbl);
+        waffenPanel.add(waffenDexLbl);
+        waffenPanel.add(waffenKnoLbl);
+        waffenPanel.add(waffenWisLbl);
+        waffenPanel.add(waffenWertLbl);
+        //endregion
+        //region rüstung
+        JPanel ruestungPanel = new JPanel();
+        ruestungPanel.setPreferredSize(new Dimension(400,54));
+        ruestungPanel.setBorder(BorderFactory.createLineBorder(Color.WHITE,2,true));
+        ruestungPanel.setBackground(Color.BLACK);
+        SpringLayout ruestungLayout = new SpringLayout();
+        ruestungPanel.setLayout(ruestungLayout);
+
+        layoutEquip.putConstraint(SpringLayout.HORIZONTAL_CENTER,ruestungPanel,0,SpringLayout.HORIZONTAL_CENTER,equipPanel);
+        layoutEquip.putConstraint(SpringLayout.NORTH,ruestungPanel,30,SpringLayout.SOUTH,waffenPanel);
+
+        ruestungBildLbl = new JLabel();
+        ruestungNameLbl = new JLabel();
+        ruestungAtkLbl = new JLabel("ATK");
+        ruestungDefLbl = new JLabel("DEF");
+        ruestungStrLbl = new JLabel("STR");
+        ruestungDexLbl = new JLabel("DEX");
+        ruestungKnoLbl = new JLabel("KNO");
+        ruestungWisLbl = new JLabel("WIS");
+        ruestungWertLbl = new JLabel("Wert");
+
+        ruestungNameLbl.setFont(equipFont);
+        ruestungNameLbl.setForeground(Color.WHITE);
+        ruestungAtkLbl.setFont(infoFont);
+        ruestungAtkLbl.setForeground(Color.WHITE);
+        ruestungDefLbl.setFont(infoFont);
+        ruestungDefLbl.setForeground(Color.WHITE);
+        ruestungStrLbl.setFont(infoFont);
+        ruestungStrLbl.setForeground(Color.WHITE);
+        ruestungDexLbl.setFont(infoFont);
+        ruestungDexLbl.setForeground(Color.WHITE);
+        ruestungKnoLbl.setFont(infoFont);
+        ruestungKnoLbl.setForeground(Color.WHITE);
+        ruestungWisLbl.setFont(infoFont);
+        ruestungWisLbl.setForeground(Color.WHITE);
+        ruestungWertLbl.setFont(infoFont);
+        ruestungWertLbl.setForeground(Color.WHITE);
+
+        ruestungLayout.putConstraint(SpringLayout.WEST,ruestungBildLbl,0,SpringLayout.WEST,ruestungPanel);
+        ruestungLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, ruestungNameLbl, 0,SpringLayout.HORIZONTAL_CENTER,ruestungPanel);
+
+        ruestungLayout.putConstraint(SpringLayout.WEST, ruestungAtkLbl, 60,SpringLayout.WEST,ruestungPanel);
+        ruestungLayout.putConstraint(SpringLayout.WEST, ruestungDefLbl, 115,SpringLayout.WEST,ruestungPanel);
+        ruestungLayout.putConstraint(SpringLayout.WEST, ruestungStrLbl, 170,SpringLayout.WEST,ruestungPanel);
+        ruestungLayout.putConstraint(SpringLayout.WEST, ruestungDexLbl, 225,SpringLayout.WEST,ruestungPanel);
+        ruestungLayout.putConstraint(SpringLayout.WEST, ruestungKnoLbl, 280,SpringLayout.WEST,ruestungPanel);
+        ruestungLayout.putConstraint(SpringLayout.WEST, ruestungWisLbl, 335,SpringLayout.WEST,ruestungPanel);
+        ruestungLayout.putConstraint(SpringLayout.WEST, ruestungWertLbl, 300,SpringLayout.WEST,ruestungPanel);
+
+        ruestungLayout.putConstraint(SpringLayout.SOUTH, ruestungAtkLbl, -2,SpringLayout.SOUTH,ruestungPanel);
+        ruestungLayout.putConstraint(SpringLayout.SOUTH, ruestungDefLbl, -2,SpringLayout.SOUTH,ruestungPanel);
+        ruestungLayout.putConstraint(SpringLayout.SOUTH, ruestungStrLbl, -2,SpringLayout.SOUTH,ruestungPanel);
+        ruestungLayout.putConstraint(SpringLayout.SOUTH, ruestungDexLbl, -2,SpringLayout.SOUTH,ruestungPanel);
+        ruestungLayout.putConstraint(SpringLayout.SOUTH, ruestungKnoLbl, -2,SpringLayout.SOUTH,ruestungPanel);
+        ruestungLayout.putConstraint(SpringLayout.SOUTH, ruestungWisLbl, -2,SpringLayout.SOUTH,ruestungPanel);
+
+        ruestungPanel.add(ruestungBildLbl);
+        ruestungPanel.add(ruestungNameLbl);
+        ruestungPanel.add(ruestungAtkLbl);
+        ruestungPanel.add(ruestungDefLbl);
+        ruestungPanel.add(ruestungStrLbl);
+        ruestungPanel.add(ruestungDexLbl);
+        ruestungPanel.add(ruestungKnoLbl);
+        ruestungPanel.add(ruestungWisLbl);
+        ruestungPanel.add(ruestungWertLbl);
+        //endregion
+        //region Schmuck
+        JPanel schmuckPanel = new JPanel();
+        schmuckPanel.setPreferredSize(new Dimension(400,54));
+        schmuckPanel.setBorder(BorderFactory.createLineBorder(Color.WHITE,2,true));
+        schmuckPanel.setBackground(Color.BLACK);
+        SpringLayout schmuckLayout = new SpringLayout();
+        schmuckPanel.setLayout(schmuckLayout);
+
+        layoutEquip.putConstraint(SpringLayout.HORIZONTAL_CENTER,schmuckPanel,0,SpringLayout.HORIZONTAL_CENTER,equipPanel);
+        layoutEquip.putConstraint(SpringLayout.NORTH,schmuckPanel,30,SpringLayout.SOUTH,ruestungPanel);
+
+        schmuckBildLbl = new JLabel();
+        schmuckNameLbl = new JLabel();
+        schmuckAtkLbl = new JLabel("ATK");
+        schmuckDefLbl = new JLabel("DEF");
+        schmuckStrLbl = new JLabel("STR");
+        schmuckDexLbl = new JLabel("DEX");
+        schmuckKnoLbl = new JLabel("KNO");
+        schmuckWisLbl = new JLabel("WIS");
+        schmuckWertLbl = new JLabel("Wert");
+
+        schmuckNameLbl.setFont(equipFont);
+        schmuckNameLbl.setForeground(Color.WHITE);
+        schmuckAtkLbl.setFont(infoFont);
+        schmuckAtkLbl.setForeground(Color.WHITE);
+        schmuckDefLbl.setFont(infoFont);
+        schmuckDefLbl.setForeground(Color.WHITE);
+        schmuckStrLbl.setFont(infoFont);
+        schmuckStrLbl.setForeground(Color.WHITE);
+        schmuckDexLbl.setFont(infoFont);
+        schmuckDexLbl.setForeground(Color.WHITE);
+        schmuckKnoLbl.setFont(infoFont);
+        schmuckKnoLbl.setForeground(Color.WHITE);
+        schmuckWisLbl.setFont(infoFont);
+        schmuckWisLbl.setForeground(Color.WHITE);
+        schmuckWertLbl.setFont(infoFont);
+        schmuckWertLbl.setForeground(Color.WHITE);
+
+        schmuckLayout.putConstraint(SpringLayout.WEST,schmuckBildLbl,0,SpringLayout.WEST,schmuckPanel);
+        schmuckLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, schmuckNameLbl, 0,SpringLayout.HORIZONTAL_CENTER,schmuckPanel);
+
+        schmuckLayout.putConstraint(SpringLayout.WEST, schmuckAtkLbl, 60,SpringLayout.WEST,schmuckPanel);
+        schmuckLayout.putConstraint(SpringLayout.WEST, schmuckDefLbl, 115,SpringLayout.WEST,schmuckPanel);
+        schmuckLayout.putConstraint(SpringLayout.WEST, schmuckStrLbl, 170,SpringLayout.WEST,schmuckPanel);
+        schmuckLayout.putConstraint(SpringLayout.WEST, schmuckDexLbl, 225,SpringLayout.WEST,schmuckPanel);
+        schmuckLayout.putConstraint(SpringLayout.WEST, schmuckKnoLbl, 280,SpringLayout.WEST,schmuckPanel);
+        schmuckLayout.putConstraint(SpringLayout.WEST, schmuckWisLbl, 335,SpringLayout.WEST,schmuckPanel);
+        schmuckLayout.putConstraint(SpringLayout.WEST, schmuckWertLbl, 300,SpringLayout.WEST,schmuckPanel);
+
+        schmuckLayout.putConstraint(SpringLayout.SOUTH, schmuckAtkLbl, -2,SpringLayout.SOUTH,schmuckPanel);
+        schmuckLayout.putConstraint(SpringLayout.SOUTH, schmuckDefLbl, -2,SpringLayout.SOUTH,schmuckPanel);
+        schmuckLayout.putConstraint(SpringLayout.SOUTH, schmuckStrLbl, -2,SpringLayout.SOUTH,schmuckPanel);
+        schmuckLayout.putConstraint(SpringLayout.SOUTH, schmuckDexLbl, -2,SpringLayout.SOUTH,schmuckPanel);
+        schmuckLayout.putConstraint(SpringLayout.SOUTH, schmuckKnoLbl, -2,SpringLayout.SOUTH,schmuckPanel);
+        schmuckLayout.putConstraint(SpringLayout.SOUTH, schmuckWisLbl, -2,SpringLayout.SOUTH,schmuckPanel);
+
+        schmuckPanel.add(schmuckBildLbl);
+        schmuckPanel.add(schmuckNameLbl);
+        schmuckPanel.add(schmuckAtkLbl);
+        schmuckPanel.add(schmuckDefLbl);
+        schmuckPanel.add(schmuckStrLbl);
+        schmuckPanel.add(schmuckDexLbl);
+        schmuckPanel.add(schmuckKnoLbl);
+        schmuckPanel.add(schmuckWisLbl);
+        schmuckPanel.add(schmuckWertLbl);
+        //endregion
+        equipPanel.add(schmuckPanel);
+        equipPanel.add(waffenPanel);
+        equipPanel.add(ruestungPanel);
         equipPanel.setVisible(false);
         gamePanel.add(equipPanel);
         //endregion
@@ -271,9 +489,8 @@ public class SpielPanel extends JPanel {
         spielerSp = new JLabel( spieler.getSp() + "/" + spieler.getMaxSp());
         JLabel spielerExpLbl = new JLabel("EP");
         spielerExp = new JLabel("" + spieler.getExp());
-        JLabel spielerGoldLbl = new JLabel("Gold");
+        JLabel spielerGoldLbl = new JLabel("<html><font color='#ffd700'>Gold");
         spielerGold = new JLabel("" + spieler.getGold());
-
 
         spielerNameLbl.setFont(statFont);
         spielerNameLbl.setForeground(Color.WHITE);
