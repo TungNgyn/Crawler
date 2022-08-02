@@ -219,7 +219,7 @@ public class Spiel {
         adminFrame.setResizable(false);
         adminFrame.setVisible(true);
 
-        mainWaffe = holzschwert;
+        mainWaffe = grossschwert;
         mainRuestung = eisenhelm;
         mainSchmuck = ring;
         UpdateSpieler();
@@ -253,6 +253,7 @@ public class Spiel {
         spielerDex.setText("" + (totalDex));
         spielerKno.setText("" + (totalKno));
         spielerWis.setText("" + (totalWis));
+        UpdateEquip(mainWaffe,mainRuestung,mainSchmuck);
     }
     //region battle
     public static void Encounter(Gegner x, int lvl) {
